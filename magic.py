@@ -11,7 +11,7 @@ import Queue
 import sys
 import threading
 import time
-from mapper import Mapper
+from cache import ScaleCache
 
 import mingus.core.notes as notes
 import rtmidi
@@ -20,7 +20,7 @@ from rtmidi.midiconstants import *
 
 
 log = logging.getLogger("midifilter")
-mapper = Mapper();
+cache = ScaleCache();
 
 class MidiDispatcher(threading.Thread):
     scale = {};
@@ -55,8 +55,8 @@ class MidiDispatcher(threading.Thread):
 
 
 def main(args=None):
-    mapper = Mapper();
-    scale = mapper.getMap(60,"diatonic");
+    cache = ScaleCache(False);
+    scale = cache.getScaleFromCache(60,"whole_note");
     print scale
 
     try:

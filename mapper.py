@@ -47,12 +47,11 @@ class Mapper:
     
     def getMap(self, rootNote, scale):
         white_keys_map = {};
-        note = notes.int_to_note((rootNote % 12));
         
         method = getattr(scales, scale);
         if not method:
             raise Exception("Scale %s not implemented" % scale);
-        scale_to_map = method(note);
+        scale_to_map = method(rootNote);
         
         norm_scale = self.normalizeNotes(scale_to_map);
         self.mapScaleToWhiteKeys(norm_scale, white_keys_map);
