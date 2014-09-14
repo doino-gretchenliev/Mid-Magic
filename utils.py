@@ -13,7 +13,11 @@ class Utils:
             octave = i / 12;
             self.midi_int_to_note_int_map[i] = i % 12;
             self.midi_int_to_note_map[i] = notes.int_to_note(i % 12);
-            
+        
+        for key in self.midi_int_to_note_int_map:
+            print str(key) + " - " + str(self.midi_int_to_note_int_map[key]);
+        
+        
     def getNote(self, midiNumber):
         return self.midi_int_to_note_map(midiNumber);
     
