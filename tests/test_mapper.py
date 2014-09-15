@@ -6,6 +6,7 @@
 """Tests for mapper"""
 import unittest
 import csv
+import collections
 from mapper import Mapper
 
 class MapperTests(unittest.TestCase):
@@ -26,5 +27,5 @@ class MapperTests(unittest.TestCase):
     def test_mapScaleToWhiteKeys(self):
         for case in self.test_map_scale_to_white_keys:
             mapped_scale = self.mapper.mapScaleToWhiteKeys(case[0]);
-            self.assertDictEqual(mapped_scale, case[1]);
+        self.assertDictEqual(mapped_scale, case[1]);
         
