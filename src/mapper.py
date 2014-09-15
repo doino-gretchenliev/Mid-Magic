@@ -27,7 +27,7 @@ class Mapper:
             else:
                 if (i == 0): i = 6;
                 else: i-=1;
-        return Note;
+        return None;
 
     def checkAllWhiteKeysMapped(self, match_map):
         return None in match_map.values();
