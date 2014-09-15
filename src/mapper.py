@@ -1,34 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# mapper.py
+# m.py
 #
 """Magic midi mapper"""
 
 
 import mingus.core.scales as scales
 import mingus.core.notes as notes
+from utils import Utils
 
 class Mapper:
-    white_keys = ['C','D','E','F','G','A','B'];
     all_keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    
+    def __init__(self):
+        self.utils = Utils();
+        self.white_keys = self.utils.getWhiteKeys();
     
     def searchPreviousNotMatched(self, note, match_map):
         note_to_check = note.replace("#", "");
         
         i = self.white_keys.index(note_to_check);
-        while(True):
+        while(len(match_map) != 7): #not some magical number(7 = white keys number)
             if self.white_keys[i] not in match_map:
                 return self.white_keys[i];
             else:
                 i-=1;
                 if i < 0:
                     i = self.white_keys.index('B');
-               
-    def mapScaleToWhiteKeys(self, scale, white_keys_map):
+                    
+    def checkAllWhiteKeysMapped(self, match_map):
+        return None in match_map.values();
+        
+    def mapScaleToWhiteKeys(self, scale):
+        mapped_scale = {};
         for note_in_scale in scale:
-            note_to_map = self.searchPreviousNotMatched(note_in_scale, white_keys_map);
-            white_keys_map[note_to_map] = note_in_scale;
+            note_to_map = self.searchPreviousNotMatched(note_in_scale, mapped_scale);
+            mapped_scale[note_to_map] = note_in_scale;
+        return mapped_scale;
             
     def checkNotMapped(self, scale, white_keys_map):
         for i in range(0, len(self.all_keys)):
@@ -42,27 +51,15 @@ class Mapper:
                     else:
                         y-=1;
     
-    def normalizeNotes(self, scale):
-        int_scale = [];
-        for note in scale:
-            int_scale.append(notes.note_to_int(note));
-        int_scale.sort(key=int);
-        note_scale = [];
-        for note in int_scale:
-            note_scale.append(notes.int_to_note(note));
-        
-        return note_scale;
-    
     def getMap(self, rootNote, scale):
-        white_keys_map = {};
         
         method = getattr(scales, scale);
         if not method:
             raise Exception("Scale %s not implemented" % scale);
         scale_to_map = method(rootNote);
         
-        norm_scale = self.normalizeNotes(scale_to_map);
-        self.mapScaleToWhiteKeys(norm_scale, white_keys_map);
-        self.checkNotMapped(norm_scale, white_keys_map);
-        return white_keys_map;
+        norm_scale = self.utils.normalizeScale(scale_to_map);
+        mapped_scale_to_white_keys = self.mapScaleToWhiteKeys(norm_scale);
+        self.checkNotMapped(norm_scale, mapped_scale_to_white_keys);
+        return mapped_scale_to_white_keys;
     
