@@ -25,10 +25,10 @@ class Mapper:
             if self.white_keys[i] not in match_map:
                 return self.white_keys[i];
             else:
-                i-=1;
-                if i < 0:
-                    i = self.white_keys.index('B');
-                    
+                if (i == 0): i = 6;
+                else: i-=1;
+        return Note;
+
     def checkAllWhiteKeysMapped(self, match_map):
         return None in match_map.values();
         
@@ -36,7 +36,9 @@ class Mapper:
         mapped_scale = {};
         for note_in_scale in scale:
             note_to_map = self.searchPreviousNotMatched(note_in_scale, mapped_scale);
-            mapped_scale[note_to_map] = note_in_scale;
+            if note_to_map is not None:
+                mapped_scale[note_to_map] = note_in_scale;
+            else: break;
         return mapped_scale;
             
     def checkNotMapped(self, scale, white_keys_map):
