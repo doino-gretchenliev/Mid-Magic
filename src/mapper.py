@@ -18,6 +18,10 @@ class Mapper:
         self.white_keys = self.utils.getWhiteKeys();
     
     def searchPreviousNotMatched(self, note, match_map):
+        #Direct match check
+        if(note in self.white_keys):
+                return note;
+            
         note_to_check = note.replace("#", "");
         
         i = self.white_keys.index(note_to_check);
