@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# cache.py
+#
+"""Midi scales cache"""
+
+
 import mingus.core.scales as scales
 
 from mapper import Mapper

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# midifilter.py
+# magic.py
 #
-"""Simple MIDI filter/ processor."""
+"""Magic midi processor"""
 
 import argparse
 import logging

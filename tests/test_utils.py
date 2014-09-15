@@ -1,4 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# test_utils.py
+#
+"""Tests for utils"""
+
 import unittest
+
 from utils import Utils
 
 
@@ -28,4 +36,4 @@ class UtilsTests(unittest.TestCase):
             self.assertEqual(note_octave[1], self.utlis.getNoteAndOctave(midi_note)[1]);
             
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main();

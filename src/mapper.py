@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# mapper.py
+#
+"""Magic midi mapper"""
+
+
 import mingus.core.scales as scales
 import mingus.core.notes as notes
 

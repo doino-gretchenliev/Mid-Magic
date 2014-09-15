@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# utils.py
+#
+"""Utils"""
+
+
 import mingus.core.notes as notes
 
 class Utils:
