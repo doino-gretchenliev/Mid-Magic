@@ -11,52 +11,62 @@ import mingus.core.notes as notes
 from utils import Utils
 
 class Mapper:
-    all_keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     
     def __init__(self):
         self.utils = Utils();
+        self.all_keys = self.utils.getNotes();
         self.white_keys = self.utils.getWhiteKeys();
     
-    def searchPreviousNotMatched(self, note, match_map):
-        #Direct match check
-        if(note in self.white_keys):
-                return note;
-            
-        note_to_check = note.replace("#", "");
+    def searchPreviousNotMatched(self, note, map_to_match, white_keys_only=False):
+        if white_keys_only is True:
+            keys_to_match = self.white_keys;
+            note_to_check = note.replace("#", "");
+        else:
+            keys_to_match = self.all_keys;
+            note_to_check = note;
         
-        i = self.white_keys.index(note_to_check);
-        while(len(match_map) != 7): #not some magical number(7 = white keys number)
-            if self.white_keys[i] not in match_map:
-                return self.white_keys[i];
+        #Direct match check
+        if(note in keys_to_match):
+            return note;
+        
+        i = keys_to_match.index(note_to_check);
+        while(len(map_to_match) != len(keys_to_match)):
+            if keys_to_match[i] not in map_to_match:
+                return keys_to_match[i];
             else:
-                if (i == 0): i = 6;
+                if (i == 0): i = (len(keys_to_match) - 1);
                 else: i-=1;
         return None;
-
-    def checkAllWhiteKeysMapped(self, match_map):
-        return None in match_map.values();
         
     def mapScaleToWhiteKeys(self, scale):
-        mapped_scale = {};
+        map_to_match = {};
         for note_in_scale in scale:
-            note_to_map = self.searchPreviousNotMatched(note_in_scale, mapped_scale);
+            note_to_map = self.searchPreviousNotMatched(note_in_scale, map_to_match, True);
             if note_to_map is not None:
-                mapped_scale[note_to_map] = note_in_scale;
+                map_to_match[note_to_map] = note_in_scale;
             else: break;
-        return mapped_scale;
+        return map_to_match;
             
-    def checkNotMapped(self, scale, white_keys_map):
+    def checkNotMapped(self, scale, map_to_match):        
         for i in range(0, len(self.all_keys)):
-            if self.all_keys[i] not in white_keys_map:
+            if self.all_keys[i] not in map_to_match:
                 y = i;
                 found = False;
                 while(found == False):
                     if self.all_keys[y] in scale:
-                        white_keys_map[self.all_keys[i]] = self.all_keys[y];
+                        map_to_match[self.all_keys[i]] = self.all_keys[y];
                         found = True;
                     else:
                         y-=1;
-    
+                        
+    def checkNotMappedScaleKey(self, scale, map_to_match):
+        for note in scale:
+            if note not in map_to_match:
+                note_to_map = self.searchPreviousNotMatched(note, map_to_match);
+                if note_to_map is not None:
+                    map_to_match[note_to_map] = note;
+                else: break;
+            
     def getMap(self, rootNote, scale):
         
         method = getattr(scales, scale);

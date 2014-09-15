@@ -33,7 +33,6 @@ class CacheTests(unittest.TestCase):
         self.assertTrue(cache.checkInCache('C', 'diatonic'));
         self.assertFalse(cache.checkInCache('C', 'lydian'));
         
-    @unittest.skip("skip until mapper gets fixed")   
     def test_cacheAllScales(self):
         cache = ScaleCache(False);
         cache.cacheAllScales();
