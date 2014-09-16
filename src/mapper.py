@@ -37,17 +37,16 @@ class Mapper:
                 if (i == 0): i = (len(keys_to_match) - 1);
                 else: i-=1;
         return None;
-        
+
     def mapScaleToWhiteKeys(self, scale):
         map_to_match = {};
         for note_in_scale in scale:
             note_to_map = self.searchPreviousNotMatched(note_in_scale, map_to_match, True);
             if note_to_map is not None:
                 map_to_match[note_to_map] = note_in_scale;
-            else: break;
         return map_to_match;
             
-    def checkNotMapped(self, scale, map_to_match):        
+    def checkNotMapped(self, scale, map_to_match):
         for i in range(0, len(self.all_keys)):
             if self.all_keys[i] not in map_to_match:
                 y = i;
@@ -68,13 +67,12 @@ class Mapper:
                 else: break;
             
     def getMap(self, rootNote, scale):
-        
         method = getattr(scales, scale);
         if not method:
             raise Exception("Scale %s not implemented" % scale);
         scale_to_map = method(rootNote);
-        
         norm_scale = self.utils.normalizeScale(scale_to_map);
+
         mapped_scale_to_white_keys = self.mapScaleToWhiteKeys(norm_scale);
         self.checkNotMappedScaleKey(norm_scale, mapped_scale_to_white_keys);
         self.checkNotMapped(norm_scale, mapped_scale_to_white_keys);
