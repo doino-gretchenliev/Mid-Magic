@@ -13,6 +13,8 @@ class Utils:
     notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     white_keys = ['C','D','E','F','G','A','B'];
     
+    
+    
     midi_int_to_note_map = {};
     midi_int_to_note_int_map = {};
     note_octave_to_midi_note_map = {};
@@ -20,6 +22,10 @@ class Utils:
     
     def __init__(self):
         self.createIntToNoteMap();
+            
+    def normalizeNote(self, note):
+        int_note = notes.note_to_int(note);
+        return notes.int_to_note(int_note);
     
     def createIntToNoteMap(self):
         for i in range(0, 128):

@@ -61,7 +61,17 @@ class MapperTests(unittest.TestCase):
             self.mapper.checkNotMapped(case[0],case[1]);
             self.assertDictEqual(case[1], case[2]);
     
+
     def test_getMap(self):
         for case in self.test_get_map:
-            map = self.mapper.getMap(case[0],case[1]);
-            self.assertDictEqual(map, case[2]);
+            #map = self.mapper.getMap_new(case[0],case[1]);
+            map = self.mapper.mapScaleToWhiteKeys_new(['F' , 'B']);
+            print "-------------------------------"
+            print case[0] + case[1];
+            print map
+            print "-------------------------------"
+            
+            self.assertDictEqual(map, ass_map);
+            
+            
+            

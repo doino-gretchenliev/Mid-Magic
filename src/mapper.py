@@ -78,3 +78,46 @@ class Mapper:
         self.checkNotMapped(norm_scale, mapped_scale_to_white_keys);
         return mapped_scale_to_white_keys;
     
+    def mapScaleToWhiteKeys_new(self, scale):
+        result_map = {};
+        for note in scale:
+            result_map[note] = note;
+        
+        not_mapped_keys = self.diff(result_map.keys(), self.all_keys);
+        mapped_keys = result_map.keys();
+        
+        for note in not_mapped_keys:
+            result_map[note] = self.searchEmpty(note, mapped_keys);
+            
+        return result_map;
+    
+    def searchEmpty(self, note, result_map):
+        dim_candidate = note;
+        aug_candidate = note;
+        print note
+        print result_map
+        print "---------"
+        
+        while(True):
+            dim_candidate = self.utils.normalizeNote(notes.diminish(dim_candidate));
+            aug_candidate = self.utils.normalizeNote(notes.augment(aug_candidate));
+            print "Dim: %s; Aug: %s" % (dim_candidate, aug_candidate); 
+            
+            if dim_candidate in result_map:
+                print "return " + dim_candidate;
+                return dim_candidate;
+            if aug_candidate in result_map:
+                print "return " + aug_candidate;
+                return aug_candidate;
+            
+    def diff(self, a, b):
+        return [bb for bb in b if bb not in a]
+
+    def getMap_new(self, rootNote, scale):
+        method = getattr(scales, scale);
+        if not method:
+            raise Exception("Scale %s not implemented" % scale);
+        scale_to_map = method(rootNote);
+        norm_scale = self.utils.normalizeScale(scale_to_map);
+        return self.mapScaleToWhiteKeys_new(norm_scale);
+    

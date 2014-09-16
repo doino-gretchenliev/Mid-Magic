@@ -11,5 +11,6 @@
 "A","chromatic","C-C;C#-C#;D-D;D#-D#;E-E;F-F;F#-F#;G-G;G#-G#;A-A;A#-A#;B-B"
 "A#","chromatic","C-C;C#-C#;D-D;D#-D#;E-E;F-F;F#-F#;G-G;G#-G#;A-A;A#-A#;B-B"
 "B","chromatic","C-C;C#-C#;D-D;D#-D#;E-E;F-F;F#-F#;G-G;G#-G#;A-A;A#-A#;B-B"
-"C","lydian","C-C;C#-C;D-D;D#-D;E-E;F-F#;F#-F#;G-G;G#-G;A-A;A#-A;B-B"
-"C#","lydian","C-C;C#-C#;D-D#;D#-D#;E-F;F-F;F#-F;G-G;G#-G#;A-A#;A#-A#;B-C"
+"D","dorian","C-C;C#-C;D-D;D#-D;E-E;F-F;F#-F;G-G;G#-G;A-A;A#-A;B-B"
+"C","lydian","C-C;C#-C;D-D;D#-D;E-E;F-E;F#-F#;G-G;G#-G;A-A;A#-A;B-B"
+"C#","lydian","C-C;C#-C#;D-C#;D#-D#;E-D#;F-F;F#-F;G-G;G#-G#;A-G#;A#-A#;B-A#"
