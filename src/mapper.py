@@ -48,11 +48,16 @@ class Mapper:
         return map_to_match;
             
     def checkNotMapped(self, scale, map_to_match):        
-        for note in self.all_keys:
-            note_to_map = self.searchPreviousNotMatched(note, map_to_match);
-            if note_to_map is not None:
-                map_to_match[note_to_map] = note;
-            else: break;
+        for i in range(0, len(self.all_keys)):
+            if self.all_keys[i] not in map_to_match:
+                y = i;
+                while(True):
+                    if self.all_keys[y] in scale:
+                        map_to_match[self.all_keys[i]] = self.all_keys[y];
+                        break;
+                    else:
+                        if (y == 0): y = (len(map_to_match) - 1);
+                        else: y-=1;
                         
     def checkNotMappedScaleKey(self, scale, map_to_match):
         for note in scale:

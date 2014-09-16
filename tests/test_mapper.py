@@ -17,7 +17,7 @@ class MapperTests(unittest.TestCase):
         self.utils = Utils();
         self.test_map_scale_to_white_keys = self.loadInputToResultMap('test_corpus/map_to_white_keys_corpus.csv',False);
         self.test_check_not_mapped_scale_key = self.loadInputToResultMap('test_corpus/map_check_not_mapped_white_key.csv', True);
-    
+        self.test_check_not_mapped = self.loadInputToResultMap('test_corpus/map_check_not_mapped.csv', True);
     
     def loadInputToResultMap(self, file, input_map):
         input_result_map = [];
@@ -47,5 +47,10 @@ class MapperTests(unittest.TestCase):
     def test_checkNotMappedScaleKey(self):
         for case in self.test_check_not_mapped_scale_key:
             self.mapper.checkNotMappedScaleKey(case[0],case[1]);
-        self.assertDictEqual(case[1], case[2]);
+            self.assertDictEqual(case[1], case[2]);
+    
+    def test_checkNotMapped(self):
+        for case in self.test_check_not_mapped:
+            self.mapper.checkNotMapped(case[0],case[1]);
+            self.assertDictEqual(case[1], case[2]);
         
