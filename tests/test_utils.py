@@ -20,7 +20,7 @@ class UtilsTests(unittest.TestCase):
     def setUp(self):
         self.utils = Utils();
         utils_for_tests = UtilsForTests();
-        self.test_calc_scale_cases = utils_for_tests.loadTestCorpus('test_corpus/test_calc_scale_corpus.txt');
+        self.test_calc_scale_cases = utils_for_tests.loadTestCorpus('test_corpus/test_calc_scale_corpus');
 
     def test_getNote(self):
         for note, midi_note in self.test_get_note.iteritems():

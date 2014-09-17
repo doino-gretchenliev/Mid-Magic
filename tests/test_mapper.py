@@ -9,6 +9,7 @@ import csv
 import collections
 from mapper import Mapper
 from utils import Utils
+from utils_for_tests import UtilsForTests
 import timeit
 
 
@@ -17,34 +18,10 @@ class MapperTests(unittest.TestCase):
     def setUp(self):
         self.mapper = Mapper();
         self.utils = Utils();
-        self.test_map_scale_to_white_keys = self.loadInputToResultMap('test_corpus/map_to_white_keys_corpus.csv');
-        self.test_get_map = self.loadInputToResultMap('test_corpus/map_get_map.csv', 'note-scale');
+        utils_for_tests = UtilsForTests();
+        self.test_map_scale_to_white_keys = utils_for_tests.loadTestCorpus('test_corpus/test_to_white_keys_corpus');
+        self.test_get_map = utils_for_tests.loadTestCorpus('test_corpus/test_get_map_corpus');
     
-    def loadInputToResultMap(self, file, input_format = None):
-        input_result_map = [];
-        with open(file, 'rb') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=',', quotechar='"');
-            for row in spamreader:
-                if input_format == 'double-map':
-                    input_scale = row[0].split(';');
-                    input_map = row[1].split(';');
-                    input_map_dict = dict(pair.split('-') for pair in input_map);
-                    expected = row[2].split(';');
-                    expected_map = dict(pair.split('-') for pair in expected);
-                    input_result_map.append([input_scale, input_map_dict, expected_map]);
-                elif input_format == 'note-scale':
-                    input_note = row[0];
-                    input_scale = row[1];
-                    expected = row[2].split(';');
-                    expected_map = dict(pair.split('-') for pair in expected);
-                    input_result_map.append([input_note, input_scale, expected_map]);
-                else:
-                    input_scale = row[0].split(';');
-                    expected = row[1].split(';');
-                    expected_map = dict(pair.split('-') for pair in expected);
-                    input_result_map.append([input_scale, expected_map]);
-        del spamreader;
-        return input_result_map;
                 
     def test_mapScaleToWhiteKeys(self):
         for case in self.test_map_scale_to_white_keys:
