@@ -39,5 +39,5 @@ class CacheTests(unittest.TestCase):
         for scale in self.utils.getAvailableScales():
             for note in self.utils.getNotes():
                 self.assertIn(scale + note, cache.cache);
-    
+                
    

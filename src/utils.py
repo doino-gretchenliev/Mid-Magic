@@ -10,7 +10,7 @@ import mingus.core.notes as notes
 
 class Utils:
     available_scales = ["diatonic", "ionian", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian", "natural_minor", "harmonic_minor", "chromatic", "whole_note"];
-    notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    all_notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     white_keys = ['C','D','E','F','G','A','B'];
     
     
@@ -22,10 +22,6 @@ class Utils:
     
     def __init__(self):
         self.createIntToNoteMap();
-            
-    def normalizeNote(self, note):
-        int_note = notes.note_to_int(note);
-        return notes.int_to_note(int_note);
     
     def createIntToNoteMap(self):
         for i in range(0, 128):
@@ -56,7 +52,7 @@ class Utils:
         return self.available_scales;
     
     def getNotes(self):
-        return self.notes;
+        return self.all_notes;
     
     def normalizeScale(self, scale):
         int_scale = {};
@@ -71,4 +67,24 @@ class Utils:
             note_scale.append(notes.int_to_note(key));
         
         return note_scale;
+    
+    def normalizeNote(self, note):
+        int_note = notes.note_to_int(note);
+        return notes.int_to_note(int_note);
+    
+    def calcScale(self, note, intervals):
+        result_scale = [];
+        result_scale.append(note);
+        
+        last_aug_note = note;
+        for interval in intervals:
+            last_aug_note = self.augmentNote(last_aug_note, interval);
+            result_scale.append(last_aug_note);
+        return result_scale;
+    
+    def augmentNote(self, note, augSteps = 1):
+        result_note = note;
+        for step in range(0, augSteps):
+            result_note = self.normalizeNote(notes.augment(result_note));
+        return result_note;
     

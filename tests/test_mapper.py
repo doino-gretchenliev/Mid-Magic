@@ -9,6 +9,8 @@ import csv
 import collections
 from mapper import Mapper
 from utils import Utils
+import timeit
+
 
 class MapperTests(unittest.TestCase):
         
@@ -16,8 +18,6 @@ class MapperTests(unittest.TestCase):
         self.mapper = Mapper();
         self.utils = Utils();
         self.test_map_scale_to_white_keys = self.loadInputToResultMap('test_corpus/map_to_white_keys_corpus.csv');
-        self.test_check_not_mapped_scale_key = self.loadInputToResultMap('test_corpus/map_check_not_mapped_white_key.csv', 'double-map');
-        self.test_check_not_mapped = self.loadInputToResultMap('test_corpus/map_check_not_mapped.csv', 'double-map');
         self.test_get_map = self.loadInputToResultMap('test_corpus/map_get_map.csv', 'note-scale');
     
     def loadInputToResultMap(self, file, input_format = None):
@@ -50,28 +50,22 @@ class MapperTests(unittest.TestCase):
         for case in self.test_map_scale_to_white_keys:
             mapped_scale = self.mapper.mapScaleToWhiteKeys(case[0]);
             self.assertDictEqual(mapped_scale, case[1]);
-        
-    def test_checkNotMappedScaleKey(self):
-        for case in self.test_check_not_mapped_scale_key:
-            self.mapper.checkNotMappedScaleKey(case[0],case[1]);
-            self.assertDictEqual(case[1], case[2]);
     
-    def test_checkNotMapped(self):
-        for case in self.test_check_not_mapped:
-            self.mapper.checkNotMapped(case[0],case[1]);
-            self.assertDictEqual(case[1], case[2]);
-    
-
     def test_getMap(self):
         for case in self.test_get_map:
-            #map = self.mapper.getMap_new(case[0],case[1]);
-            map = self.mapper.mapScaleToWhiteKeys_new(['F' , 'B']);
-            print "-------------------------------"
-            print case[0] + case[1];
-            print map
-            print "-------------------------------"
+            map = self.mapper.getMap(case[0],case[1]);
+            self.assertDictEqual(map, case[2]);
             
-            self.assertDictEqual(map, ass_map);
-            
-            
-            
+    @unittest.skip("Preformance test")        
+    def test_TimeitGetMap(self):
+        setup = "from utils import Utils; from mapper import Mapper; mapper = Mapper(); utils = Utils();"
+        code_to_test = """
+        for scale in utils.getAvailableScales():
+            for note in utils.getNotes():
+                mapper.getMap(note, scale);
+        """
+        result_first = timeit.repeat(code_to_test, setup = setup,repeat=100, number=100);
+        result_avg = reduce(lambda x, y: x + y, result_first) / len(result_first)
+        print("Result avg: " + str(result_avg));
+        
+    
