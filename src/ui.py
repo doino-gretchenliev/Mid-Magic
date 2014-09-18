@@ -8,6 +8,11 @@ from utils import Utils
 from cache import ScaleCache
 from mapper import Mapper
 import mingus.core.notes as notes
+import logging
+
+import rtmidi_python as rtmidi
+
+log = logging.getLogger("mid-magic")
 
 class Gui(Frame):
     
@@ -26,6 +31,7 @@ class Gui(Frame):
         self.mapper = Mapper();
         self.load_init_button_states();
         
+        ############### GUI ############### 
         apply(Frame.__init__,(self,Master),kw)
         self._Frame4 = Frame(self)
         self._Frame4.pack(expand='yes',fill='both',side='left')
@@ -59,9 +65,15 @@ class Gui(Frame):
         self._Frame32 = Frame(self._Frame11,background='#016678')
         self._Frame32.pack(side='left')
         self._MenuInput = Menubutton(self._Frame32,activebackground='#3b3c3c'
-            ,activeforeground='#CCFFDE',background='#FFFFCD',text='Input'
-            ,width='30')
+            ,activeforeground='#CCFFDE',background='#FFFFCD',menu='_MenuInputs'
+            ,text='Input',width='30')
         self._MenuInput.pack(expand='yes',fill='both',side='top')
+        self._Frame33 = Frame(self._Frame11,background='#016678')
+        self._Frame33.pack(expand='yes',fill='both',side='left')
+        self._ButtonScanMidi = Button(self._Frame33
+            ,command=self._on__ButtonScanMidi_command
+            ,text='Scan for midi devices')
+        self._ButtonScanMidi.pack(side='top')
         self._Frame31 = Frame(self._Frame11,background='#016678')
         self._Frame31.pack(side='left')
         self._MenuOutput = Menubutton(self._Frame31,activebackground='#3b3c3c'
@@ -175,13 +187,18 @@ class Gui(Frame):
             ,background='#CD0045',command=self._on__ButtonQuit_command
             ,text='Quit')
         self._ButtonQuit.pack(expand='yes',side='top')
-        
+        ############### GUI ###############
     
         self._MenuInput.menu  =  Menu(self._MenuInput, tearoff = 0 );
         self._MenuInput["menu"]  =  self._MenuInput.menu;
+            
+        self._MenuOutput.menu  =  Menu(self._MenuOutput, tearoff = 0 );
+        self._MenuOutput["menu"]  =  self._MenuOutput.menu;
     
-        mayoVar  = IntVar();
-        self._MenuInput.menu.add_checkbutton ( label="mayo", variable=mayoVar );
+        self.midi_in = rtmidi.MidiIn();
+        self.midi_out = rtmidi.MidiOut();
+        
+        self.midi_in.callback = self.midi_callback
 
         self.showMassage("Loading...");
         for note in self.utils.getNotes():
@@ -191,11 +208,47 @@ class Gui(Frame):
             self._ListboxScale.insert(END, scale);
         self.showMassage("Ready to work, sir!");
         
-        self.current_note = ()
-        self.current_scale = ()   
-        self.poll() # start polling the list
+        self.current_note = ();
+        self.current_scale = ();   
+        self.poll_lists(); # start polling the list
+        
+    def check_midi_ports(self):
+        self.midi_out.close_port();
+        self.midi_out.close_port();
+        
+        ports_in = self.midi_in.ports;
+        ports_out = self.midi_out.ports;
+        
+        last_in = self._MenuInput.menu.index("end")
+        self._MenuInput.menu.delete(0,last_in);
+        
+        last_out = self._MenuOutput.menu.index("end")
+        self._MenuOutput.menu.delete(0,last_out);
+        
+        if len(ports_in) == 0:
+            inVar  = IntVar();
+            self._MenuInput.menu.add_checkbutton(label="No input devices", variable=inVar );
+        else:
+            for port in ports_in:
+                inVar  = IntVar();
+                self._MenuInput.menu.add_checkbutton(label=port, variable=inVar );
+                self.midi_in.open_port(0);
+                
+        if len(ports_out) == 0:
+            outVar  = IntVar();
+            self._MenuOutput.menu.add_checkbutton(label="No output devices", variable=outVar );
+        else:
+            for port in ports_out:
+                spamVar  = StringVar();
+                self._MenuOutput.menu.add_checkbutton(label=port,command = lambda: self.callback(port), variable=spamVar,onvalue='yes', offvalue='no');
+                spamVar.trace("w", self.callback);
+                self.midi_out.open_port(0);
+        
+    def callback(self, *args):
+        print args
+        print "variable changed!"
 
-    def poll(self):
+    def poll_lists(self):
         now_note = self._ListboxNote.curselection();
         now_scale = self._ListboxScale.curselection();
         if len(now_note) != 0 and now_note != self.current_note:
@@ -204,7 +257,13 @@ class Gui(Frame):
         if len(now_scale) != 0 and now_scale != self.current_scale:
             self.process_scale_change(now_scale)
             self.current_scale = now_scale
-        self.after(250, self.poll)
+        self.after(250, self.poll_lists)
+        
+    def midi_callback(self, message, time_stamp):
+        print message, time_stamp
+        
+    def _on__ButtonScanMidi_command(self,Event=None):
+        self.check_midi_ports();
 
     def process_note_change(self, note):
         if len(note) != 0 and len(self.current_scale) != 0:
@@ -321,9 +380,12 @@ class Gui(Frame):
         pass
 
     def _on__ButtonQuit_command(self,Event=None):
+        self.midi_in.close_port();
+        self.midi_out.close_port();
         exit(0);
 
     def _on__ScaleTrans_command(self,Event=None):
         self.transpose = self._ScaleTrans.get();
+        
 
 
