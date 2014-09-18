@@ -29,22 +29,20 @@ class ScaleCache:
             self.cacheScale(note, scale);
 
     def cacheScale(self, note, scale):
-        self.cache[scale + note] = self.mapper.getMap(note, scale);
+        self.cache[note + scale] = self.mapper.getMap(note, scale);
 
     def checkInCache(self, note, scale):
-        return (scale + note) in self.cache;
+        return (note + scale) in self.cache;
 
     def clearCache(self):
         self.cache.clear();
 
-    def getScaleFromCache(self, midiNote, scale):
-        note_name = self.utils.getNote(midiNote);
-
-        if self.checkInCache(note_name, scale):
-            return self.cache[note_name+scele];
+    def getScaleFromCache(self, note, scale):
+        if self.checkInCache(note, scale):
+            return self.cache[note + scale];
         else:
-            self.cacheScale(note_name, scale);
-            return self.cache[note_name+scele];
+            self.cacheScale(note, scale);
+            return self.cache[note + scale];
 
     def __del__(self):
         self.clearCache();

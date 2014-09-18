@@ -27,7 +27,6 @@ class Gui(Frame):
         self.load_init_button_states();
         
         apply(Frame.__init__,(self,Master),kw)
-
         self._Frame4 = Frame(self)
         self._Frame4.pack(expand='yes',fill='both',side='left')
         self._Frame3 = Frame(self,background='#016678')
@@ -35,26 +34,40 @@ class Gui(Frame):
         self._Frame29 = Frame(self._Frame4,background='#016678')
         self._Frame29.pack(expand='yes',fill='both',side='top')
         self._ListboxNote = Listbox(self._Frame29,background='#014455'
-            ,foreground='#CCFFDE',highlightthickness='0',selectmode='single'
+            ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
             ,width='15')
         self._ListboxNote.pack(expand='yes',fill='both',side='left')
         self._Frame28 = Frame(self._Frame4,background='#016678')
         self._Frame28.pack(expand='yes',fill='both',side='top')
         self._ListboxScale = Listbox(self._Frame28,background='#014455'
-            ,foreground='#CCFFDE',highlightthickness='0',selectmode='single'
+            ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
             ,width='15')
         self._ListboxScale.pack(expand='yes',fill='both',side='left')
-        self._Frame11 = Frame(self._Frame3,background='#016678')
-        self._Frame11.pack(expand='yes',fill='both',side='top')
-        self._LabelStatus = Label(self._Frame11,background='#FFFFCD'
+        self._Frame17 = Frame(self._Frame3)
+        self._Frame17.pack(expand='yes',fill='both',side='top')
+        self._LabelStatus = Label(self._Frame17,background='#FFFFCD'
             ,relief='groove',state='disabled',text='This is test text.')
         self._LabelStatus.pack(expand='yes',fill='both',side='top')
+        self._Frame11 = Frame(self._Frame3,background='#016678')
+        self._Frame11.pack(expand='yes',fill='both',side='top')
         self._Frame10 = Frame(self._Frame3,background='#016678')
         self._Frame10.pack(side='top')
         self._Frame19 = Frame(self._Frame3)
         self._Frame19.pack(side='top')
         self._Frame18 = Frame(self._Frame3)
         self._Frame18.pack(expand='yes',fill='both',side='top')
+        self._Frame32 = Frame(self._Frame11,background='#016678')
+        self._Frame32.pack(side='left')
+        self._MenuInput = Menubutton(self._Frame32,activebackground='#3b3c3c'
+            ,activeforeground='#CCFFDE',background='#FFFFCD',text='Input'
+            ,width='30')
+        self._MenuInput.pack(expand='yes',fill='both',side='top')
+        self._Frame31 = Frame(self._Frame11,background='#016678')
+        self._Frame31.pack(side='left')
+        self._MenuOutput = Menubutton(self._Frame31,activebackground='#3b3c3c'
+            ,activeforeground='#CCFFDE',background='#FFFFCD',text='Output'
+            ,width='30')
+        self._MenuOutput.pack(expand='yes',fill='both',side='top')
         self._Frame22 = Frame(self._Frame10,background='#016678',width='30')
         self._Frame22.pack(expand='yes',fill='both',side='left')
         self._Frame24 = Frame(self._Frame10,background='#016678'
@@ -144,7 +157,7 @@ class Gui(Frame):
         self._ButtonB = Button(self._Frame6,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
             ,command=self._on__ButtonB_command,text='B',width='2')
-        self._ButtonB.pack(expand='yes',fill='both',side='left')
+        self._ButtonB.pack(expand='yes',fill='both',side='right')
         self._Frame5 = Frame(self._Frame19)
         self._Frame5.pack(expand='yes',fill='both',side='left')
         self._Frame23 = Frame(self._Frame18,background='#016678')
@@ -156,24 +169,27 @@ class Gui(Frame):
             ,label='Transpose(cents)',orient='horizontal',resolution=1
             ,sliderlength='50',tickinterval=0,to=12)
         self._ScaleTrans.pack(expand='yes',fill='x',side='left')
-        self._Frame17 = Frame(self._Frame18,background='#016678')
-        self._Frame17.pack(expand='yes',fill='both',side='left')
-        self._ButtonMap = Button(self._Frame17,activebackground='#ffffff'
-            ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonMap_command,text='Map')
-        self._ButtonMap.pack(expand='yes',side='top')
         self._Frame9 = Frame(self._Frame18,background='#016678')
         self._Frame9.pack(expand='yes',fill='both',side='left')
         self._ButtonQuit = Button(self._Frame9,activebackground='#BB1167'
             ,background='#CD0045',command=self._on__ButtonQuit_command
             ,text='Quit')
-        self._ButtonQuit.pack(expand='yes',side='left')
+        self._ButtonQuit.pack(expand='yes',side='top')
+        
+    
+        self._MenuInput.menu  =  Menu(self._MenuInput, tearoff = 0 );
+        self._MenuInput["menu"]  =  self._MenuInput.menu;
+    
+        mayoVar  = IntVar();
+        self._MenuInput.menu.add_checkbutton ( label="mayo", variable=mayoVar );
 
+        self.showMassage("Loading...");
         for note in self.utils.getNotes():
             self._ListboxNote.insert(END, note);
             
         for scale in self.utils.getAvailableScales():
             self._ListboxScale.insert(END, scale);
+        self.showMassage("Ready to work, sir!");
         
         self.current_note = ()
         self.current_scale = ()   
@@ -191,22 +207,22 @@ class Gui(Frame):
         self.after(250, self.poll)
 
     def process_note_change(self, note):
-        print note
-        print self.current_scale
         if len(note) != 0 and len(self.current_scale) != 0:
             note_name = notes.int_to_note(note[0]);
             scale_name = self.utils.getAvailableScales()[self.current_scale[0]];
             self.scale_to_map = self.mapper.getScaleToMap(note_name, scale_name);
-            mapped_scale = self.mapper.getMap(note_name, scale_name);
+            mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
             self.show_scale_to_buttons();
+            self.showMassage(note_name + " - " + scale_name);
      
     def process_scale_change(self, scale):
         if len(scale) != 0 and len(self.current_note) != 0:
             note_name = notes.int_to_note(self.current_note[0]);
             scale_name = self.utils.getAvailableScales()[scale[0]];
             self.scale_to_map = self.mapper.getScaleToMap(note_name, scale_name);
-            self.mapped_scale = self.mapper.getMap(note_name, scale_name);
+            self.mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
             self.show_scale_to_buttons();
+            self.showMassage(note_name + " - " + scale_name);
             
     def show_scale_to_buttons(self):
         for note in self.utils.getNotes():
@@ -214,11 +230,13 @@ class Gui(Frame):
             button_name = "self._Button" + button_name;
             
             if note in self.scale_to_map:
+                self.button_state_map[note] = True 
                 if '#' in note:
                     button_color = self.button_color_state_map_black[True];
                 else:
                     button_color = self.button_color_state_map_white[True];
             else:
+                self.button_state_map[note] = False
                 if '#' in note:
                     button_color = self.button_color_state_map_black[False];
                 else:
@@ -246,6 +264,10 @@ class Gui(Frame):
     def set_new_mapped_scale(self):
         if len(self.scale_to_map) != 0:
             self.mapped_scale = self.mapper.getCustomMap(self.scale_to_map);
+            self.showMassage("Cutom scale: \n");
+            
+    def showMassage(self, message):
+        self._LabelStatus.config(text = message);
 
     def _on__ButtonASharp_command(self,Event=None):
         new_state = self.process_button_change('A#');
