@@ -48,10 +48,18 @@ class Mapper:
         return [bb for bb in b if bb not in a]
     
     def getMap(self, rootNote, scale):
+        scale_to_map = self.getScaleToMap(rootNote,scale);
+        return self.mapScaleToWhiteKeys(scale_to_map);
+    
+    def getScaleToMap(self, rootNote, scale):
         method = getattr(scales, scale);
         if not method:
             raise Exception("Scale %s not implemented" % scale);
         scale_to_map = method(rootNote);
+        return self.utils.normalizeScale(scale_to_map);
+    
+    def getCustomMap(self, scale):
+        scale_to_map = scale;
         norm_scale = self.utils.normalizeScale(scale_to_map);
         return self.mapScaleToWhiteKeys(norm_scale);
     

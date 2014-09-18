@@ -55,40 +55,36 @@ class MidiDispatcher(threading.Thread):
 
 
 def main(args=None):
-    cache = ScaleCache(False);
-    scale = cache.getScaleFromCache(60,"whole_note");
-    print scale
-
     try:
-        midiin, inport_name = open_midiport('Nord Piano 2 MIDI Output', "input")
-        midiout, outport_name = open_midiport('Nord Piano 2 MIDI Input', "output")
+        midiin, inport_name = open_midiport('Nord Piano 2 MIDI Output', "input");
+        midiout, outport_name = open_midiport('Nord Piano 2 MIDI Input', "output");
         
     except IOError as exc:
-        print(exc)
-        return 1
+        print(exc);
+        return 1;
     except (EOFError, KeyboardInterrupt):
-        return 0
+        return 0;
     
-    dispatcher = MidiDispatcher(midiin, midiout)
+    dispatcher = MidiDispatcher(midiin, midiout);
 
     print("Entering main loop. Press Control-C to exit.")
     try:
-        dispatcher.start()
+        dispatcher.start();
         while True:
-            time.sleep(1)
+            time.sleep(1);
     except KeyboardInterrupt:
-        dispatcher.stop()
-        dispatcher.join()
-        print('')
+        dispatcher.stop();
+        dispatcher.join();
+        print('');
     finally:
-        print("Exit.")
-        midiin.close_port()
-        midiout.close_port()
-        del midiin
-        del midiout
+        print("Exit.");
+        midiin.close_port();
+        midiout.close_port();
+        del midiin;
+        del midiout;
 
     return 0
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]) or 0)
+    sys.exit(main(sys.argv[1:]) or 0);

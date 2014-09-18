@@ -47,6 +47,6 @@ class UtilsTests(unittest.TestCase):
         for case in self.test_calc_scale_cases:
             scale = self.utils.calcScale(case[1],case[0]);
             self.assertListEqual(scale, case[2]);
-        
+
 if __name__ == '__main__':
     unittest.main();
