@@ -11,6 +11,7 @@ import mingus.core.notes as notes
 import logging
 
 import rtmidi_python as rtmidi
+from rtmidi.midiconstants import *
 
 log = logging.getLogger("mid-magic")
 
@@ -20,6 +21,7 @@ class Gui(Frame):
     scale_to_map = [];
     mapped_scale = {};
     
+    auto_mode = False;
     button_state_map = {};
     
     button_color_state_map_black = {True:'#00CCA9',False:'#2b3633'};
@@ -70,8 +72,9 @@ class Gui(Frame):
         self._MenuInput.pack(expand='yes',fill='both',side='top')
         self._Frame33 = Frame(self._Frame11,background='#016678')
         self._Frame33.pack(expand='yes',fill='both',side='left')
-        self._ButtonScanMidi = Button(self._Frame33
-            ,command=self._on__ButtonScanMidi_command
+        self._ButtonScanMidi = Button(self._Frame33,activebackground='#3b3c3c'
+            ,activeforeground='#CCFFDE',background='#2b3633'
+            ,command=self._on__ButtonScanMidi_command,foreground='#CCFFDE'
             ,text='Scan for midi devices')
         self._ButtonScanMidi.pack(side='top')
         self._Frame31 = Frame(self._Frame11,background='#016678')
@@ -169,8 +172,8 @@ class Gui(Frame):
         self._ButtonB = Button(self._Frame6,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
             ,command=self._on__ButtonB_command,text='B',width='2')
-        self._ButtonB.pack(expand='yes',fill='both',side='right')
-        self._Frame5 = Frame(self._Frame19)
+        self._ButtonB.pack(expand='yes',fill='both',side='left')
+        self._Frame5 = Frame(self._Frame19,background='#016678')
         self._Frame5.pack(expand='yes',fill='both',side='left')
         self._Frame23 = Frame(self._Frame18,background='#016678')
         self._Frame23.pack(expand='yes',fill='both',side='left')
@@ -183,10 +186,15 @@ class Gui(Frame):
         self._ScaleTrans.pack(expand='yes',fill='x',side='left')
         self._Frame9 = Frame(self._Frame18,background='#016678')
         self._Frame9.pack(expand='yes',fill='both',side='left')
-        self._ButtonQuit = Button(self._Frame9,activebackground='#BB1167'
+        self._ButtonAutoMode = Button(self._Frame9,activebackground='#ffffff'
+            ,activeforeground='#2b3633',background='#FFFFCD',text='Magic Mode!')
+        self._ButtonAutoMode.pack(expand='yes',side='bottom')
+        self._Frame34 = Frame(self._Frame18,background='#016678')
+        self._Frame34.pack(expand='yes',fill='both',side='left')
+        self._ButtonQuit = Button(self._Frame34,activebackground='#BB1167'
             ,background='#CD0045',command=self._on__ButtonQuit_command
             ,text='Quit')
-        self._ButtonQuit.pack(expand='yes',side='top')
+        self._ButtonQuit.pack(expand='yes',side='left')
         ############### GUI ###############
     
         self._MenuInput.menu  =  Menu(self._MenuInput, tearoff = 0 );
@@ -202,18 +210,27 @@ class Gui(Frame):
         self.midi_vir.open_virtual_port("TEST");
         
         self.midi_in.callback = self.midi_callback
+        
+        self._ButtonAutoMode.config(command=self.process_auto_mode_change);
 
-        self.showMassage("Loading...");
+        self.showMessage("Loading...");
         for note in self.utils.getNotes():
             self._ListboxNote.insert(END, note);
             
         for scale in self.utils.getAvailableScales():
             self._ListboxScale.insert(END, scale);
-        self.showMassage("Ready to work, sir!");
+        self.showMessage("Ready to work, sir!");
         
         self.current_note = ();
         self.current_scale = ();   
         self.poll_lists(); # start polling the list
+        
+    def process_auto_mode_change(self):
+        if self.auto_mode:
+            self.auto_mode = False;
+        else:
+            self.auto_mode = True;
+            self.showMessage("Magic Mode!");
         
     def check_midi_ports(self):
         self.midi_out.close_port();
@@ -265,7 +282,19 @@ class Gui(Frame):
         self.after(250, self.poll_lists)
         
     def midi_callback(self, message, time_stamp):
-        print message, time_stamp
+        event_types = (NOTE_ON, NOTE_OFF)
+        if (event[0][0] & 0xF0) in event_types:
+            if(event[0][1] < 60):
+                self.scale = mapper.getMap(event[0][1]);
+                self.midiout.send_message(event[0]);
+            else:
+                octave = event[0][1] / int(12);
+                note = event[0][1] % 12;
+                note_name = notes.int_to_note(note);
+                print notes.note_to_int(self.scale[note_name]);
+                event[0][1] = notes.note_to_int(self.scale[note_name]) + (12 * octave);
+                self.midiout.send_message(event[0]);
+                print notes.int_to_note(event[0][1] %12) + "(" + str(event[0][1]) +")" + " instead of " + notes.int_to_note(note) + "(" + str(note * octave) + ")";
         
     def _on__ButtonScanMidi_command(self,Event=None):
         self.check_midi_ports();
@@ -277,7 +306,8 @@ class Gui(Frame):
             self.scale_to_map = self.mapper.getScaleToMap(note_name, scale_name);
             mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
             self.show_scale_to_buttons();
-            self.showMassage(note_name + " - " + scale_name);
+            self.auto_mode = False;
+            self.showMessage(note_name + " - " + scale_name);
      
     def process_scale_change(self, scale):
         if len(scale) != 0 and len(self.current_note) != 0:
@@ -286,7 +316,8 @@ class Gui(Frame):
             self.scale_to_map = self.mapper.getScaleToMap(note_name, scale_name);
             self.mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
             self.show_scale_to_buttons();
-            self.showMassage(note_name + " - " + scale_name);
+            self.auto_mode = False;
+            self.showMessage(note_name + " - " + scale_name);
             
     def show_scale_to_buttons(self):
         for note in self.utils.getNotes():
@@ -315,6 +346,7 @@ class Gui(Frame):
         new_state = self.update_scale_to_map(note);
         self.button_state_map[note] = new_state;
         self.set_new_mapped_scale();
+        self.auto_mode = False;
         return new_state;
             
     def update_scale_to_map(self, note):
@@ -328,9 +360,9 @@ class Gui(Frame):
     def set_new_mapped_scale(self):
         if len(self.scale_to_map) != 0:
             self.mapped_scale = self.mapper.getCustomMap(self.scale_to_map);
-            self.showMassage("Cutom scale: \n");
+            self.showMessage("Cutom scale: \n");
             
-    def showMassage(self, message):
+    def showMessage(self, message):
         self._LabelStatus.config(text = message);
 
     def _on__ButtonASharp_command(self,Event=None):
