@@ -198,6 +198,9 @@ class Gui(Frame):
         self.midi_in = rtmidi.MidiIn();
         self.midi_out = rtmidi.MidiOut();
         
+        self.midi_vir = rtmidi.MidiIn();
+        self.midi_vir.open_virtual_port("TEST");
+        
         self.midi_in.callback = self.midi_callback
 
         self.showMassage("Loading...");
@@ -216,38 +219,40 @@ class Gui(Frame):
         self.midi_out.close_port();
         self.midi_out.close_port();
         
+        self.midi_in = rtmidi.MidiIn();
+        self.midi_out = rtmidi.MidiOut();
+        
         ports_in = self.midi_in.ports;
         ports_out = self.midi_out.ports;
         
-        last_in = self._MenuInput.menu.index("end")
-        self._MenuInput.menu.delete(0,last_in);
-        
-        last_out = self._MenuOutput.menu.index("end")
-        self._MenuOutput.menu.delete(0,last_out);
-        
+        self._MenuInput.menu.delete(0,END);
+        self._MenuOutput.menu.delete(0,END);
+                
         if len(ports_in) == 0:
-            inVar  = IntVar();
-            self._MenuInput.menu.add_checkbutton(label="No input devices", variable=inVar );
+            self._MenuInput.config(text="No input devices");
         else:
-            for port in ports_in:
-                inVar  = IntVar();
-                self._MenuInput.menu.add_checkbutton(label=port, variable=inVar );
-                self.midi_in.open_port(0);
+            for port_index in range(0, len(ports_in)):
+                self._MenuInput.menu.add_command(label=ports_in[port_index], command=lambda port_index=port_index: self.midi_in_device_select_callback(port_index));
                 
         if len(ports_out) == 0:
-            outVar  = IntVar();
-            self._MenuOutput.menu.add_checkbutton(label="No output devices", variable=outVar );
+            self._MenuInput.config(text="No output devices");
         else:
-            for port in ports_out:
-                spamVar  = StringVar();
-                self._MenuOutput.menu.add_checkbutton(label=port,command = lambda: self.callback(port), variable=spamVar,onvalue='yes', offvalue='no');
-                spamVar.trace("w", self.callback);
-                self.midi_out.open_port(0);
+            for port_index in range(0, len(ports_out)):
+                self._MenuOutput.menu.add_command(label=ports_out[port_index], command=lambda port_index=port_index: self.midi_out_device_select_callback(port_index));
+                
+    def midi_out_device_select_callback(self, port_index):
+        self.midi_out.close_port();
+        self.midi_out.open_port(port_index);
+        self.updateMenuTitle(port_index, self._MenuOutput, self._MenuOutput.menu);
         
-    def callback(self, *args):
-        print args
-        print "variable changed!"
-
+    def midi_in_device_select_callback(self, port_index):
+        self.midi_in.close_port();
+        self.midi_in.open_port(port_index);
+        self.updateMenuTitle(port_index, self._MenuInput, self._MenuInput.menu);
+    
+    def updateMenuTitle(self, index, menu_button, menu):
+        menu_button.config(text=menu.entrycget(index, "label"));
+        
     def poll_lists(self):
         now_note = self._ListboxNote.curselection();
         now_scale = self._ListboxScale.curselection();
