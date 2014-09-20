@@ -24,6 +24,8 @@ class Gui(Frame):
     auto_mode = False;
     button_state_map = {};
     
+    event_types = (NOTE_ON, NOTE_OFF);
+    
     button_color_state_map_black = {True:'#00CCA9',False:'#2b3633'};
     button_color_state_map_white = {True:'#00CCA9',False:'#FFFFCD'};
     
@@ -203,13 +205,9 @@ class Gui(Frame):
         self._MenuOutput.menu  =  Menu(self._MenuOutput, tearoff = 0 );
         self._MenuOutput["menu"]  =  self._MenuOutput.menu;
     
-        self.midi_in = rtmidi.MidiIn();
-        self.midi_out = rtmidi.MidiOut();
-        
-        self.midi_vir = rtmidi.MidiIn();
-        self.midi_vir.open_virtual_port("TEST");
-        
-        self.midi_in.callback = self.midi_callback
+        self.midi_in = None;
+        self.midi_out = None;
+        self.check_midi_ports();
         
         self._ButtonAutoMode.config(command=self.process_auto_mode_change);
 
@@ -219,6 +217,11 @@ class Gui(Frame):
             
         for scale in self.utils.getAvailableScales():
             self._ListboxScale.insert(END, scale);
+            
+        self.current_scale = [10];
+        self.current_note = [0];
+        self.process_note_change(self.current_note);
+        
         self.showMessage("Ready to work, sir!");
         
         self.current_note = ();
@@ -233,8 +236,10 @@ class Gui(Frame):
             self.showMessage("Magic Mode!");
         
     def check_midi_ports(self):
-        self.midi_out.close_port();
-        self.midi_out.close_port();
+        if self.midi_in is not None:
+            self.midi_in.close_port();
+        if self.midi_out is not None:
+            self.midi_out.close_port();
         
         self.midi_in = rtmidi.MidiIn();
         self.midi_out = rtmidi.MidiOut();
@@ -250,13 +255,15 @@ class Gui(Frame):
         else:
             for port_index in range(0, len(ports_in)):
                 self._MenuInput.menu.add_command(label=ports_in[port_index], command=lambda port_index=port_index: self.midi_in_device_select_callback(port_index));
-                
+            self.midi_in_device_select_callback(0);
+               
         if len(ports_out) == 0:
             self._MenuInput.config(text="No output devices");
         else:
             for port_index in range(0, len(ports_out)):
                 self._MenuOutput.menu.add_command(label=ports_out[port_index], command=lambda port_index=port_index: self.midi_out_device_select_callback(port_index));
-                
+            self.midi_out_device_select_callback(0);
+            
     def midi_out_device_select_callback(self, port_index):
         self.midi_out.close_port();
         self.midi_out.open_port(port_index);
@@ -265,6 +272,7 @@ class Gui(Frame):
     def midi_in_device_select_callback(self, port_index):
         self.midi_in.close_port();
         self.midi_in.open_port(port_index);
+        self.midi_in.callback = self.midi_callback
         self.updateMenuTitle(port_index, self._MenuInput, self._MenuInput.menu);
     
     def updateMenuTitle(self, index, menu_button, menu):
@@ -283,19 +291,39 @@ class Gui(Frame):
         
     def midi_callback(self, message, time_stamp):
         event_types = (NOTE_ON, NOTE_OFF)
-        if (event[0][0] & 0xF0) in event_types:
-            if(event[0][1] < 60):
-                self.scale = mapper.getMap(event[0][1]);
-                self.midiout.send_message(event[0]);
+        if (message[0] & 0xF0) in event_types:
+            self.showCurrentNote(message);
+            if self.auto_mode:
+                if(message[1] < 60):
+                    note_scale = self.utils.getNoteAndOctave(message[1]);
+                    if len(self._ListboxScale.curselection()) == 0:
+                        self.showMessage("Select scale first!");
+                    else:
+                        scale = self.utils.getAvailableScales()[self._ListboxScale.curselection()[0]];
+                        self.mapped_scale = self.cache.getScaleFromCache(note_scale[0],scale);
+                        self.showMessage("Magic mode scale:%s-%s"%(note_scale[0],scale));
+                        self.midi_out.send_message(message);
+                else:
+                    self.send_modif_massage(message);
             else:
-                octave = event[0][1] / int(12);
-                note = event[0][1] % 12;
-                note_name = notes.int_to_note(note);
-                print notes.note_to_int(self.scale[note_name]);
-                event[0][1] = notes.note_to_int(self.scale[note_name]) + (12 * octave);
-                self.midiout.send_message(event[0]);
-                print notes.int_to_note(event[0][1] %12) + "(" + str(event[0][1]) +")" + " instead of " + notes.int_to_note(note) + "(" + str(note * octave) + ")";
+                self.send_modif_massage(message);
+        else:
+            self.midi_out.send_message(message);
+            
+    def send_modif_massage(self, message):
+        note_octave = self.utils.getNoteAndOctave(message[1]);
+        message[1] = self.utils.getMidiNumber(self.mapped_scale[note_octave[0]], note_octave[1]);
+        message[1] += self.transpose;
+        self.midi_out.send_message(message);
         
+    
+    def showCurrentNote(self, message):
+        note_octave = self.utils.getNoteAndOctave(message[1]);
+        note_name = note_octave[0];
+        octave = note_octave[1];
+        if (message[0] & 0xF0) in self.event_types:
+            self.showMessage("Note: %s, Octave: %s, Vel: %s"%(note_name,octave,message[2]));
+            
     def _on__ButtonScanMidi_command(self,Event=None):
         self.check_midi_ports();
 
@@ -304,7 +332,7 @@ class Gui(Frame):
             note_name = notes.int_to_note(note[0]);
             scale_name = self.utils.getAvailableScales()[self.current_scale[0]];
             self.scale_to_map = self.mapper.getScaleToMap(note_name, scale_name);
-            mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
+            self.mapped_scale = self.cache.getScaleFromCache(note_name, scale_name);
             self.show_scale_to_buttons();
             self.auto_mode = False;
             self.showMessage(note_name + " - " + scale_name);
@@ -345,9 +373,18 @@ class Gui(Frame):
     def process_button_change(self, note):
         new_state = self.update_scale_to_map(note);
         self.button_state_map[note] = new_state;
-        self.set_new_mapped_scale();
+        self.set_custom_mapped_scale();
+        self.searchForScale(self.scale_to_map)
         self.auto_mode = False;
         return new_state;
+    
+    def searchForScale(self, scale_to_search):
+        for note in self.utils.getNotes():
+            for scale in self.utils.getAvailableScales():
+                if set(scale_to_search) == set(self.mapper.getScaleToMap(note, scale)):
+                    print note,scale;
+                    print hash(set(scale_to_search))
+                    print hash(set(self.mapper.getScaleToMap(note, scale)))
             
     def update_scale_to_map(self, note):
         if self.button_state_map[note] is True:
@@ -356,8 +393,8 @@ class Gui(Frame):
         else:
             self.scale_to_map.append(note);
             return True;
-            
-    def set_new_mapped_scale(self):
+
+    def set_custom_mapped_scale(self):
         if len(self.scale_to_map) != 0:
             self.mapped_scale = self.mapper.getCustomMap(self.scale_to_map);
             self.showMessage("Cutom scale: \n");
@@ -413,16 +450,13 @@ class Gui(Frame):
         new_state = self.process_button_change('G');
         self._ButtonG.configure(bg = self.button_color_state_map_white[new_state]);
 
-    def _on__ButtonMap_command(self,Event=None):
-        pass
-
     def _on__ButtonQuit_command(self,Event=None):
-        self.midi_in.close_port();
-        self.midi_out.close_port();
+        if self.midi_in is not None:
+            self.midi_in.close_port();
+        if self.midi_out is not None:
+            self.midi_out.close_port();
         exit(0);
 
     def _on__ScaleTrans_command(self,Event=None):
         self.transpose = self._ScaleTrans.get();
         
-
-

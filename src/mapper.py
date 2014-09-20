@@ -52,14 +52,32 @@ class Mapper:
         return self.mapScaleToWhiteKeys(scale_to_map);
     
     def getScaleToMap(self, rootNote, scale):
-        method = getattr(scales, scale);
-        if not method:
-            raise Exception("Scale %s not implemented" % scale);
-        scale_to_map = method(rootNote);
+        
+        try:
+            method = getattr(scales, scale);
+            scale_to_map = method(rootNote);
+        except:
+            scale_to_map = self.calcScale(rootNote, self.utils.getCustomScale(scale));
         return self.utils.normalizeScale(scale_to_map);
     
     def getCustomMap(self, scale):
         scale_to_map = scale;
         norm_scale = self.utils.normalizeScale(scale_to_map);
         return self.mapScaleToWhiteKeys(norm_scale);
+    
+    def calcScale(self, note, intervals):
+        result_scale = [];
+        result_scale.append(note);
+        
+        last_aug_note = note;
+        for interval in intervals:
+            last_aug_note = self.augmentNote(last_aug_note, interval);
+            result_scale.append(last_aug_note);
+        return result_scale;
+    
+    def augmentNote(self, note, augSteps = 1):
+        result_note = note;
+        for step in range(0, augSteps):
+            result_note = self.utils.normalizeNote(notes.augment(result_note));
+        return result_note;
     

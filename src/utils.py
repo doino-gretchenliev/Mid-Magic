@@ -22,6 +22,15 @@ class Utils:
     
     def __init__(self):
         self.createIntToNoteMap();
+        self.loadCustomScales();
+        
+    def loadCustomScales(self):
+        self.custom_scales = [];
+        with open('custom_scales/custom_scales') as f:
+            lines = f.readlines();
+        for line in lines:
+            result = eval(line);
+            self.custom_scales.append(result);
     
     def createIntToNoteMap(self):
         for i in range(0, 128):
@@ -48,8 +57,17 @@ class Utils:
     def getWhiteKeys(self):
         return self.white_keys;
     
+    def getCustomScale(self, scale_name):
+        for scale in self.custom_scales:
+            if scale.keys()[0] == scale_name:
+                return scale[scale_name];
+        return None;
+    
     def getAvailableScales(self):
-        return self.available_scales;
+        all_scales = list(self.available_scales);
+        for scale in self.custom_scales:
+            all_scales.append(scale.keys()[0]);
+        return all_scales;
     
     def getNotes(self):
         return self.all_notes;
@@ -72,19 +90,4 @@ class Utils:
         int_note = notes.note_to_int(note);
         return notes.int_to_note(int_note);
     
-    def calcScale(self, note, intervals):
-        result_scale = [];
-        result_scale.append(note);
-        
-        last_aug_note = note;
-        for interval in intervals:
-            last_aug_note = self.augmentNote(last_aug_note, interval);
-            result_scale.append(last_aug_note);
-        return result_scale;
-    
-    def augmentNote(self, note, augSteps = 1):
-        result_note = note;
-        for step in range(0, augSteps):
-            result_note = self.normalizeNote(notes.augment(result_note));
-        return result_note;
     
