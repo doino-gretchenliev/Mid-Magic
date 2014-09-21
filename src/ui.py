@@ -375,7 +375,7 @@ class Gui(Frame):
         new_state = self.update_scale_to_map(note);
         self.button_state_map[note] = new_state;
         self.set_custom_mapped_scale();
-        self.searchForScale(self.scale_to_map)
+        #self.searchForScale(self.scale_to_map)
         self.auto_mode = False;
         return new_state;
     
