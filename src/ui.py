@@ -30,12 +30,6 @@ class Gui(Frame):
     button_color_state_map_white = {True:'#00CCA9',False:'#FFFFCD'};
     
     def __init__(self,Master=None,*pos,**kw):
-        self.utils = Utils();
-        self.cache = ScaleCache();
-        self.mapper = Mapper();
-        self.load_init_button_states();
-        
-        ############### GUI ############### 
         apply(Frame.__init__,(self,Master),kw)
         self._Frame4 = Frame(self)
         self._Frame4.pack(expand='yes',fill='both',side='left')
@@ -45,13 +39,13 @@ class Gui(Frame):
         self._Frame29.pack(expand='yes',fill='both',side='top')
         self._ListboxNote = Listbox(self._Frame29,background='#014455'
             ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
-            ,width='15')
+            ,width='2')
         self._ListboxNote.pack(expand='yes',fill='both',side='left')
         self._Frame28 = Frame(self._Frame4,background='#016678')
         self._Frame28.pack(expand='yes',fill='both',side='top')
         self._ListboxScale = Listbox(self._Frame28,background='#014455'
             ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
-            ,width='15')
+            ,width='2')
         self._ListboxScale.pack(expand='yes',fill='both',side='left')
         self._Frame17 = Frame(self._Frame3)
         self._Frame17.pack(expand='yes',fill='both',side='top')
@@ -61,7 +55,7 @@ class Gui(Frame):
         self._Frame11 = Frame(self._Frame3,background='#016678')
         self._Frame11.pack(expand='yes',fill='both',side='top')
         self._Frame10 = Frame(self._Frame3,background='#016678')
-        self._Frame10.pack(side='top')
+        self._Frame10.pack(expand='yes',fill='both',side='top')
         self._Frame19 = Frame(self._Frame3)
         self._Frame19.pack(side='top')
         self._Frame18 = Frame(self._Frame3)
@@ -70,7 +64,7 @@ class Gui(Frame):
         self._Frame32.pack(side='left')
         self._MenuInput = Menubutton(self._Frame32,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#FFFFCD',menu='_MenuInputs'
-            ,text='Input',width='30')
+            ,text='Input',width='10')
         self._MenuInput.pack(expand='yes',fill='both',side='top')
         self._Frame33 = Frame(self._Frame11,background='#016678')
         self._Frame33.pack(expand='yes',fill='both',side='left')
@@ -83,7 +77,7 @@ class Gui(Frame):
         self._Frame31.pack(side='left')
         self._MenuOutput = Menubutton(self._Frame31,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#FFFFCD',text='Output'
-            ,width='30')
+            ,width='10')
         self._MenuOutput.pack(expand='yes',fill='both',side='top')
         self._Frame22 = Frame(self._Frame10,background='#016678',width='30')
         self._Frame22.pack(expand='yes',fill='both',side='left')
@@ -93,16 +87,16 @@ class Gui(Frame):
         self._ButtonCSharp = Button(self._Frame24,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonCSharp_command,foreground='#CCFFDE'
-            ,relief='flat',text='C#',width='1')
+            ,height='2',relief='flat',text='C#',width='1')
         self._ButtonCSharp.pack(expand='yes',fill='both',side='left')
         self._Frame13 = Frame(self._Frame10,background='#016678',width='10')
-        self._Frame13.pack(side='left')
+        self._Frame13.pack(expand='yes',fill='both',side='left')
         self._Frame14 = Frame(self._Frame10)
-        self._Frame14.pack(side='left')
+        self._Frame14.pack(expand='yes',fill='both',side='left')
         self._ButtonDSharp = Button(self._Frame14,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonDSharp_command,foreground='#CCFFDE'
-            ,height='10',text='D#',width='1')
+            ,height='2',text='D#',width='1')
         self._ButtonDSharp.pack(expand='yes',fill='both',side='left')
         self._Frame7 = Frame(self._Frame10,background='#016678',width='50')
         self._Frame7.pack(expand='yes',fill='both',side='left')
@@ -111,16 +105,16 @@ class Gui(Frame):
         self._ButtonFSharp = Button(self._Frame8,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonFSharp_command,foreground='#CCFFDE'
-            ,text='F#',width='1')
+            ,height='2',text='F#',width='1')
         self._ButtonFSharp.pack(expand='yes',fill='both',side='left')
         self._Frame15 = Frame(self._Frame10,background='#016678',width='10')
-        self._Frame15.pack(side='left')
+        self._Frame15.pack(expand='yes',fill='both',side='left')
         self._Frame26 = Frame(self._Frame10)
         self._Frame26.pack(expand='yes',fill='both',side='left')
         self._ButtonGSharp = Button(self._Frame26,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonGSharp_command,foreground='#CCFFDE'
-            ,text='G#',width='1')
+            ,height='2',text='G#',width='1')
         self._ButtonGSharp.pack(expand='yes',fill='both',side='left')
         self._Frame12 = Frame(self._Frame10,background='#016678',width='10')
         self._Frame12.pack(expand='yes',fill='both',side='left')
@@ -129,15 +123,15 @@ class Gui(Frame):
         self._ButtonASharp = Button(self._Frame16,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonASharp_command,foreground='#CCFFDE'
-            ,text='A#',width='1')
+            ,height='2',text='A#',width='1')
         self._ButtonASharp.pack(expand='yes',fill='both',side='left')
         self._Frame30 = Frame(self._Frame10,background='#016678',width='30')
         self._Frame30.pack(expand='yes',fill='both',side='left')
         self._Frame21 = Frame(self._Frame19,background='#016678',width='20')
         self._Frame21.pack(expand='yes',fill='both',side='left')
         self._ButtonC = Button(self._Frame21,activebackground='#ffffff'
-            ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonC_command,height='12',text='C',width='2')
+            ,activeforeground='#2b3633',background='#FFFFCD',borderwidth='3'
+            ,command=self._on__ButtonC_command,height='2',text='C',width='2')
         self._ButtonC.pack(expand='yes',fill='both',side='left')
         self._Frame25 = Frame(self._Frame19)
         self._Frame25.pack(expand='yes',fill='both',side='left')
@@ -174,7 +168,7 @@ class Gui(Frame):
         self._ButtonB = Button(self._Frame6,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
             ,command=self._on__ButtonB_command,text='B',width='2')
-        self._ButtonB.pack(expand='yes',fill='both',side='left')
+        self._ButtonB.pack(expand='yes',fill='both',side='right')
         self._Frame5 = Frame(self._Frame19,background='#016678')
         self._Frame5.pack(expand='yes',fill='both',side='left')
         self._Frame23 = Frame(self._Frame18,background='#016678')
@@ -189,7 +183,8 @@ class Gui(Frame):
         self._Frame9 = Frame(self._Frame18,background='#016678')
         self._Frame9.pack(expand='yes',fill='both',side='left')
         self._ButtonAutoMode = Button(self._Frame9,activebackground='#ffffff'
-            ,activeforeground='#2b3633',background='#FFFFCD',text='Magic Mode!')
+            ,activeforeground='#2b3633',background='#FFFFCD',text='Magic mode'
+            ,width='7')
         self._ButtonAutoMode.pack(expand='yes',side='bottom')
         self._Frame34 = Frame(self._Frame18,background='#016678')
         self._Frame34.pack(expand='yes',fill='both',side='left')
