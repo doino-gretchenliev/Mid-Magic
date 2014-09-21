@@ -30,6 +30,12 @@ class Gui(Frame):
     button_color_state_map_white = {True:'#00CCA9',False:'#FFFFCD'};
     
     def __init__(self,Master=None,*pos,**kw):
+        self.utils = Utils();
+        self.cache = ScaleCache();
+        self.mapper = Mapper();
+        self.load_init_button_states();
+        
+        ############### GUI ############### 
         apply(Frame.__init__,(self,Master),kw)
         self._Frame4 = Frame(self)
         self._Frame4.pack(expand='yes',fill='both',side='left')
