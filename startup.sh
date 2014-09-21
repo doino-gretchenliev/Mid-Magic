@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python ~/Mid-Magic/src/main.py
+python /home/pi/Mid-Magic/src/main.py
