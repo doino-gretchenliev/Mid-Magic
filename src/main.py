@@ -9,6 +9,10 @@ if __name__ == '__main__':
     Root = Tk()
     App = Gui(Root)
     App.pack(expand='yes',fill='both')
-    Root.geometry('320x240+10+10')
+    w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+    Root.overrideredirect(1)
+    Root.geometry("%dx%d+0+0" % (w, h))
+    Root.focus_set() # <-- move focus to this widget
+    Root.bind("<Escape>", lambda e: e.widget.quit())
     Root.title('Mid!Magic')
     Root.mainloop()
