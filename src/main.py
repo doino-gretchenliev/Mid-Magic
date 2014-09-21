@@ -9,7 +9,7 @@ if __name__ == '__main__':
     Root = Tk()
     App = Gui(Root)
     App.pack(expand='yes',fill='both')
-    w, h = Root.winfo_screenwidth(), root.winfo_screenheight()
+    w, h = Root.winfo_screenwidth(), Root.winfo_screenheight()
     Root.overrideredirect(1)
     Root.geometry("%dx%d+0+0" % (w, h))
     Root.focus_set() # <-- move focus to this widget
