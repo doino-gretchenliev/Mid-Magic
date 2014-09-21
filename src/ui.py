@@ -44,14 +44,14 @@ class Gui(Frame):
         self._Frame29 = Frame(self._Frame4,background='#016678')
         self._Frame29.pack(expand='yes',fill='both',side='top')
         self._ListboxNote = Listbox(self._Frame29,background='#014455'
-            ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
-            ,width='2')
+            ,foreground='#CCFFDE',height='4',highlightthickness='0'
+            ,selectborderwidth='5',selectmode='extended',width='6')
         self._ListboxNote.pack(expand='yes',fill='both',side='left')
         self._Frame28 = Frame(self._Frame4,background='#016678')
         self._Frame28.pack(expand='yes',fill='both',side='top')
         self._ListboxScale = Listbox(self._Frame28,background='#014455'
-            ,foreground='#CCFFDE',highlightthickness='0',selectmode='extended'
-            ,width='2')
+            ,foreground='#CCFFDE',height='5',highlightthickness='0'
+            ,selectmode='extended',width='6')
         self._ListboxScale.pack(expand='yes',fill='both',side='left')
         self._Frame17 = Frame(self._Frame3)
         self._Frame17.pack(expand='yes',fill='both',side='top')
@@ -61,7 +61,7 @@ class Gui(Frame):
         self._Frame11 = Frame(self._Frame3,background='#016678')
         self._Frame11.pack(expand='yes',fill='both',side='top')
         self._Frame10 = Frame(self._Frame3,background='#016678')
-        self._Frame10.pack(expand='yes',fill='both',side='top')
+        self._Frame10.pack(side='top')
         self._Frame19 = Frame(self._Frame3)
         self._Frame19.pack(side='top')
         self._Frame18 = Frame(self._Frame3)
@@ -73,19 +73,19 @@ class Gui(Frame):
             ,text='Input',width='10')
         self._MenuInput.pack(expand='yes',fill='both',side='top')
         self._Frame33 = Frame(self._Frame11,background='#016678')
-        self._Frame33.pack(expand='yes',fill='both',side='left')
+        self._Frame33.pack(expand='yes',fill='x',side='left')
         self._ButtonScanMidi = Button(self._Frame33,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonScanMidi_command,foreground='#CCFFDE'
-            ,text='Scan for midi devices')
-        self._ButtonScanMidi.pack(side='top')
+            ,text='Scan')
+        self._ButtonScanMidi.pack(expand='yes',fill='x',side='top')
         self._Frame31 = Frame(self._Frame11,background='#016678')
-        self._Frame31.pack(side='left')
+        self._Frame31.pack(expand='yes',fill='both',side='left')
         self._MenuOutput = Menubutton(self._Frame31,activebackground='#3b3c3c'
             ,activeforeground='#CCFFDE',background='#FFFFCD',text='Output'
             ,width='10')
-        self._MenuOutput.pack(expand='yes',fill='both',side='top')
-        self._Frame22 = Frame(self._Frame10,background='#016678',width='30')
+        self._MenuOutput.pack(expand='yes',fill='x',side='top')
+        self._Frame22 = Frame(self._Frame10,background='#016678',width='1')
         self._Frame22.pack(expand='yes',fill='both',side='left')
         self._Frame24 = Frame(self._Frame10,background='#016678'
             ,highlightbackground='Black',width='20')
@@ -94,7 +94,7 @@ class Gui(Frame):
             ,activeforeground='#CCFFDE',background='#2b3633'
             ,command=self._on__ButtonCSharp_command,foreground='#CCFFDE'
             ,height='2',relief='flat',text='C#',width='1')
-        self._ButtonCSharp.pack(expand='yes',fill='both',side='left')
+        self._ButtonCSharp.pack(expand='yes',side='left')
         self._Frame13 = Frame(self._Frame10,background='#016678',width='10')
         self._Frame13.pack(expand='yes',fill='both',side='left')
         self._Frame14 = Frame(self._Frame10)
@@ -131,49 +131,49 @@ class Gui(Frame):
             ,command=self._on__ButtonASharp_command,foreground='#CCFFDE'
             ,height='2',text='A#',width='1')
         self._ButtonASharp.pack(expand='yes',fill='both',side='left')
-        self._Frame30 = Frame(self._Frame10,background='#016678',width='30')
+        self._Frame30 = Frame(self._Frame10,background='#016678')
         self._Frame30.pack(expand='yes',fill='both',side='left')
         self._Frame21 = Frame(self._Frame19,background='#016678',width='20')
         self._Frame21.pack(expand='yes',fill='both',side='left')
         self._ButtonC = Button(self._Frame21,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD',borderwidth='3'
-            ,command=self._on__ButtonC_command,height='2',text='C',width='2')
+            ,command=self._on__ButtonC_command,height='2',text='C')
         self._ButtonC.pack(expand='yes',fill='both',side='left')
         self._Frame25 = Frame(self._Frame19)
         self._Frame25.pack(expand='yes',fill='both',side='left')
         self._ButtonD = Button(self._Frame25,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonD_command,text='D',width='2')
+            ,command=self._on__ButtonD_command,text='D')
         self._ButtonD.pack(expand='yes',fill='both',side='left')
         self._Frame20 = Frame(self._Frame19)
         self._Frame20.pack(expand='yes',fill='both',side='left')
         self._ButtonE = Button(self._Frame20,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonE_command,text='E',width='2')
+            ,command=self._on__ButtonE_command,text='E')
         self._ButtonE.pack(expand='yes',fill='both',side='right')
         self._Frame1 = Frame(self._Frame19)
         self._Frame1.pack(expand='yes',fill='both',side='left')
         self._ButtonF = Button(self._Frame1,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonF_command,text='F',width='2')
+            ,command=self._on__ButtonF_command,text='F')
         self._ButtonF.pack(expand='yes',fill='both',side='right')
         self._Frame27 = Frame(self._Frame19)
         self._Frame27.pack(expand='yes',fill='both',side='left')
         self._ButtonG = Button(self._Frame27,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonG_command,text='G',width='2')
+            ,command=self._on__ButtonG_command,text='G')
         self._ButtonG.pack(expand='yes',fill='both',side='left')
         self._Frame2 = Frame(self._Frame19)
         self._Frame2.pack(expand='yes',fill='both',side='left')
         self._ButtonA = Button(self._Frame2,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonA_command,text='A',width='2')
+            ,command=self._on__ButtonA_command,text='A')
         self._ButtonA.pack(expand='yes',fill='both',side='right')
         self._Frame6 = Frame(self._Frame19)
         self._Frame6.pack(expand='yes',fill='both',side='left')
         self._ButtonB = Button(self._Frame6,activebackground='#ffffff'
             ,activeforeground='#2b3633',background='#FFFFCD'
-            ,command=self._on__ButtonB_command,text='B',width='2')
+            ,command=self._on__ButtonB_command,text='B')
         self._ButtonB.pack(expand='yes',fill='both',side='right')
         self._Frame5 = Frame(self._Frame19,background='#016678')
         self._Frame5.pack(expand='yes',fill='both',side='left')
