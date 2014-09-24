@@ -1,29 +1,22 @@
 #!/usr/bin/env python
+#coding=utf8
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget
 
-from ui_mainform import Ui_MainWindow
+from mainwindow import Ui_MainWindow
 
 
-class MainForm(QMainWindow):
-
+class MainForm(QWidget):
     def __init__(self, parent=None):
         super(MainForm, self).__init__(parent)
-
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        
-    @pyqtSlot(bool)
-    def on_pushButtonD_toggled(self, value):
-        print str(value)
-
 
 if __name__ == '__main__':
     import sys
 
     app = QApplication(sys.argv)
-    
-    mainForm = MainForm()
-    mainForm.show()
+    main = MainForm()
+    main.show()
     sys.exit(app.exec_())
