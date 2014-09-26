@@ -29,7 +29,12 @@ class ScaleCache:
             self.cacheScale(note, scale);
 
     def cacheScale(self, note, scale):
-        self.cache[note + scale] = self.mapper.getMap(note, scale);
+        scale_to_map = self.mapper.getScaleToMap(note, scale);
+        mapped_scale = self.mapper.getMap(scale_to_map);
+        
+        result = {'scale_to_map':scale_to_map, 'mapped_scale': mapped_scale}
+        
+        self.cache[note + scale] = result;
 
     def checkInCache(self, note, scale):
         return (note + scale) in self.cache;

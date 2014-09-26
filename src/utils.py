@@ -69,10 +69,7 @@ class Utils:
         return self.__available_scales;
     
     def getAllAvailableScales(self):
-        all_scales = list(self.getAvailableScales());
-        for scale in self.getCustomScales():
-            all_scales.append(scale);
-        return all_scales;
+        return list(self.getAvailableScales() + self.getCustomScales());
     
     def checkIsCustom(self, scale_name):
         return scale_name in self.getCustomScales();

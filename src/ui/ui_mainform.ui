@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>240</height>
+    <height>239</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -259,7 +259,7 @@
           <x>10</x>
           <y>50</y>
           <width>281</width>
-          <height>111</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="textElideMode">
@@ -284,6 +284,22 @@
          <bool>true</bool>
         </property>
         <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonMagic">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>136</y>
+          <width>93</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Magic mode</string>
+        </property>
+        <property name="checkable">
          <bool>true</bool>
         </property>
        </widget>
@@ -316,7 +332,7 @@
           <x>30</x>
           <y>10</y>
           <width>41</width>
-          <height>61</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="autoFillBackground">
@@ -341,7 +357,7 @@
           <x>150</x>
           <y>10</y>
           <width>41</width>
-          <height>61</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="text">
@@ -355,9 +371,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -371,9 +387,9 @@
         <property name="geometry">
          <rect>
           <x>90</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -387,9 +403,9 @@
         <property name="geometry">
          <rect>
           <x>130</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -403,9 +419,9 @@
         <property name="geometry">
          <rect>
           <x>50</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -419,9 +435,9 @@
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -435,9 +451,9 @@
         <property name="geometry">
          <rect>
           <x>210</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -453,7 +469,7 @@
           <x>230</x>
           <y>10</y>
           <width>41</width>
-          <height>61</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="text">
@@ -469,7 +485,7 @@
           <x>70</x>
           <y>10</y>
           <width>41</width>
-          <height>61</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="text">
@@ -483,9 +499,9 @@
         <property name="geometry">
          <rect>
           <x>170</x>
-          <y>70</y>
+          <y>80</y>
           <width>41</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -501,7 +517,7 @@
           <x>190</x>
           <y>10</y>
           <width>41</width>
-          <height>61</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="text">
@@ -514,38 +530,13 @@
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Transpose</string>
+        <string>Configurate</string>
        </attribute>
-       <widget class="QDial" name="dialTranspose">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>10</y>
-          <width>141</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>-12</number>
-        </property>
-        <property name="maximum">
-         <number>12</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="invertedControls">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QSpinBox" name="spinBoxTranspose">
         <property name="geometry">
          <rect>
-          <x>110</x>
-          <y>110</y>
+          <x>90</x>
+          <y>10</y>
           <width>81</width>
           <height>26</height>
          </rect>
@@ -557,71 +548,59 @@
          <number>12</number>
         </property>
        </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Transpose:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="listWidgetInput">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>281</width>
+          <height>51</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="listWidgetOutput">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>281</width>
+          <height>51</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonScan">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>10</y>
+          <width>93</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Scan</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>320</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>true</bool>
-   </property>
-   <property name="defaultUp">
-    <bool>false</bool>
-   </property>
-   <property name="nativeMenuBar">
-    <bool>true</bool>
-   </property>
-   <widget class="QMenu" name="menuConfiguration">
-    <property name="title">
-     <string>Configuration</string>
-    </property>
-    <addaction name="actionMidiInput"/>
-    <addaction name="actionMidiOutput"/>
-    <addaction name="actionScanForDevices"/>
-   </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="contextMenuPolicy">
-     <enum>Qt::DefaultContextMenu</enum>
-    </property>
-    <property name="acceptDrops">
-     <bool>true</bool>
-    </property>
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>About</string>
-    </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-    <property name="toolTipsVisible" stdset="0">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuMagicMode">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>Magic mode</string>
-    </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <addaction name="menuMagicMode"/>
-   <addaction name="menuConfiguration"/>
-   <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionMidiInput">
@@ -644,38 +623,5 @@
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>spinBoxTranspose</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>dialTranspose</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>167</x>
-     <y>196</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>162</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dialTranspose</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBoxTranspose</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>162</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>167</x>
-     <y>196</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

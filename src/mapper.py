@@ -47,11 +47,11 @@ class Mapper:
     def getNotMapped(self, a, b):
         return [bb for bb in b if bb not in a]
     
-    def getMap(self, rootNote, scale_to_map):
+    def getMap(self, scale_to_map):
         return self.mapScaleToWhiteKeys(scale_to_map);
     
     def getScaleToMap(self, rootNote, scale):
-        if checkIsCustom(scale):
+        if self.utils.checkIsCustom(scale):
             scale_to_map = self.calcScale(rootNote, self.utils.getIntervalsForScale(scale));
         else:
             method = getattr(scales, scale);
