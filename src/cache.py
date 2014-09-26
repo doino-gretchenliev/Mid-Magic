@@ -21,7 +21,7 @@ class ScaleCache:
             self.cacheAllScales();
 
     def cacheAllScales(self):
-        for scale in self.utils.getAvailableScales():
+        for scale in self.utils.getAllAvailableScales():
             self.cacheHoleScale(scale);
 
     def cacheHoleScale(self, scale):

@@ -9,16 +9,19 @@ import collections
 import mingus.core.notes as notes
 
 class Utils:
-    available_scales = ["diatonic", "ionian", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian", "natural_minor", "harmonic_minor", "chromatic", "whole_note"];
-    all_notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    white_keys = ['C','D','E','F','G','A','B'];
+    __available_scales = ["diatonic", "ionian", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian", "natural_minor", "harmonic_minor", "chromatic", "whole_note"];
+    __custom_scales = [];
+    __custom_scales_intervals_map = {};
+    
+    __all_notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    __white_keys = ['C','D','E','F','G','A','B'];
     
     
     
-    midi_int_to_note_map = {};
-    midi_int_to_note_int_map = {};
-    note_octave_to_midi_note_map = {};
-    midi_note_to_note_octave_map = {};
+    __midi_int_to_note_map = {};
+    __midi_int_to_note_int_map = {};
+    __note_octave_to_midi_note_map = {};
+    __midi_note_to_note_octave_map = {};
     
     def __init__(self):
         self.createIntToNoteMap();
@@ -30,47 +33,55 @@ class Utils:
             lines = f.readlines();
         for line in lines:
             result = eval(line);
-            self.custom_scales.append(result);
+            for key, intervals in result.iteritems():
+                self.__custom_scales.append(key);
+                self.__custom_scales_intervals_map[key] = intervals;
     
     def createIntToNoteMap(self):
         for i in range(0, 128):
             note = i % 12;
             note_name = notes.int_to_note(note);
             octave = (i / 12) - 1;
-            self.midi_int_to_note_int_map[i] = i % 12;
-            self.midi_int_to_note_map[i] = notes.int_to_note(i % 12);
-            self.note_octave_to_midi_note_map[note_name + str(octave)] = i;
-            self.midi_note_to_note_octave_map[i] = [note_name,octave];
+            self.__midi_int_to_note_int_map[i] = i % 12;
+            self.__midi_int_to_note_map[i] = notes.int_to_note(i % 12);
+            self.__note_octave_to_midi_note_map[note_name + str(octave)] = i;
+            self.__midi_note_to_note_octave_map[i] = [note_name,octave];
         
     def getNote(self, midiNumber):
-        return self.midi_int_to_note_map[midiNumber];
+        return self.__midi_int_to_note_map[midiNumber];
     
     def getNoteNumber(self, midiNumber):
-        return self.midi_int_to_note_int_map[midiNumber];
+        return self.__midi_int_to_note_int_map[midiNumber];
         
     def getMidiNumber(self, note, octave):
-        return  self.note_octave_to_midi_note_map[note + str(octave)];
+        return  self.__note_octave_to_midi_note_map[note + str(octave)];
     
     def getNoteAndOctave(self, midiNumber):
-        return  self.midi_note_to_note_octave_map[midiNumber];
+        return  self.__midi_note_to_note_octave_map[midiNumber];
     
     def getWhiteKeys(self):
-        return self.white_keys;
+        return self.__white_keys;
     
-    def getCustomScale(self, scale_name):
-        for scale in self.custom_scales:
-            if scale.keys()[0] == scale_name:
-                return scale[scale_name];
-        return None;
+    def getCustomScales(self):
+        return self.__custom_scales;
     
     def getAvailableScales(self):
-        all_scales = list(self.available_scales);
-        for scale in self.custom_scales:
-            all_scales.append(scale.keys()[0]);
+        return self.__available_scales;
+    
+    def getAllAvailableScales(self):
+        all_scales = list(self.getAvailableScales());
+        for scale in self.getCustomScales():
+            all_scales.append(scale);
         return all_scales;
     
+    def checkIsCustom(self, scale_name):
+        return scale_name in self.getCustomScales();
+    
+    def getIntervalsForScale(self, scale_name):
+        return self.__custom_scales_intervals_map[scale_name];
+    
     def getNotes(self):
-        return self.all_notes;
+        return self.__all_notes;
     
     def normalizeScale(self, scale):
         int_scale = {};

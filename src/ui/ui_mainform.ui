@@ -117,7 +117,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -141,11 +141,11 @@
        <attribute name="title">
         <string>All scales</string>
        </attribute>
-       <widget class="QListWidget" name="listWidget">
+       <widget class="QListWidget" name="listWidgetNotes">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>0</y>
+          <y>10</y>
           <width>281</width>
           <height>31</height>
          </rect>
@@ -153,8 +153,11 @@
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
-        <property name="sizeAdjustPolicy">
-         <enum>QAbstractScrollArea::AdjustIgnored</enum>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
         </property>
         <property name="autoScroll">
          <bool>true</bool>
@@ -175,7 +178,7 @@
          <enum>QListView::SinglePass</enum>
         </property>
         <property name="spacing">
-         <number>3</number>
+         <number>2</number>
         </property>
         <property name="uniformItemSizes">
          <bool>false</bool>
@@ -250,71 +253,39 @@
          </property>
         </item>
        </widget>
-       <widget class="QListWidget" name="listWidget_2">
+       <widget class="QListWidget" name="listWidgetScales">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
+          <y>50</y>
           <width>281</width>
-          <height>101</height>
+          <height>111</height>
          </rect>
         </property>
-        <property name="movement">
-         <enum>QListView::Static</enum>
+        <property name="textElideMode">
+         <enum>Qt::ElideRight</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerItem</enum>
+        </property>
+        <property name="flow">
+         <enum>QListView::LeftToRight</enum>
         </property>
         <property name="isWrapping" stdset="0">
          <bool>true</bool>
         </property>
         <property name="resizeMode">
-         <enum>QListView::Fixed</enum>
+         <enum>QListView::Adjust</enum>
         </property>
         <property name="viewMode">
-         <enum>QListView::IconMode</enum>
-        </property>
-        <property name="modelColumn">
-         <number>0</number>
+         <enum>QListView::ListMode</enum>
         </property>
         <property name="uniformItemSizes">
          <bool>true</bool>
         </property>
         <property name="wordWrap">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
-        <item>
-         <property name="text">
-          <string>first</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>second</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>thrid</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>fourth</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>fifth</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>sexth</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>seveth</string>
-         </property>
-        </item>
        </widget>
       </widget>
       <widget class="QWidget" name="CustomScale">
@@ -609,13 +580,13 @@
    <property name="nativeMenuBar">
     <bool>true</bool>
    </property>
-   <widget class="QMenu" name="menuNew">
+   <widget class="QMenu" name="menuConfiguration">
     <property name="title">
      <string>Configuration</string>
     </property>
-    <addaction name="actionMidi_input"/>
-    <addaction name="actionMidi_output"/>
-    <addaction name="actionScan_for_devices"/>
+    <addaction name="actionMidiInput"/>
+    <addaction name="actionMidiOutput"/>
+    <addaction name="actionScanForDevices"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="contextMenuPolicy">
@@ -633,11 +604,11 @@
     <property name="separatorsCollapsible">
      <bool>false</bool>
     </property>
-    <property name="toolTipsVisible">
+    <property name="toolTipsVisible" stdset="0">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QMenu" name="menuMagic_mode">
+   <widget class="QMenu" name="menuMagicMode">
     <property name="tearOffEnabled">
      <bool>false</bool>
     </property>
@@ -648,12 +619,12 @@
      <bool>false</bool>
     </property>
    </widget>
-   <addaction name="menuMagic_mode"/>
-   <addaction name="menuNew"/>
+   <addaction name="menuMagicMode"/>
+   <addaction name="menuConfiguration"/>
    <addaction name="menuAbout"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionMidi_input">
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionMidiInput">
    <property name="checkable">
     <bool>false</bool>
    </property>
@@ -661,12 +632,12 @@
     <string>Midi input</string>
    </property>
   </action>
-  <action name="actionMidi_output">
+  <action name="actionMidiOutput">
    <property name="text">
     <string>Midi output</string>
    </property>
   </action>
-  <action name="actionScan_for_devices">
+  <action name="actionScanForDevices">
    <property name="text">
     <string>Scan for devices</string>
    </property>
@@ -674,22 +645,6 @@
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>dialTranspose</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBoxTranspose</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>162</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>167</x>
-     <y>196</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>spinBoxTranspose</sender>
    <signal>valueChanged(int)</signal>
@@ -703,6 +658,22 @@
     <hint type="destinationlabel">
      <x>162</x>
      <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dialTranspose</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBoxTranspose</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>162</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>167</x>
+     <y>196</y>
     </hint>
    </hints>
   </connection>
