@@ -8,10 +8,11 @@ from cache import ScaleCache
 from mapper import Mapper
 
 import rtmidi_python as rtmidi
-from rtmidi.midiconstants import *
-
 
 class MainForm(QtGui.QMainWindow):
+    
+    NOTE_OFF = 0x80
+    NOTE_ON = 0x90
 
     def __init__(self, parent=None):
         super(MainForm, self).__init__(parent)
@@ -34,6 +35,10 @@ class MainForm(QtGui.QMainWindow):
         self.midi_in = None;
         self.midi_out = None;
         self.check_midi_ports();
+        
+
+        
+        self.ui.statusBar.showMessage("Ready for rock'N'roll!",1000*5);
     
         
     def loadAvailableScales(self):
@@ -180,6 +185,8 @@ class MainForm(QtGui.QMainWindow):
                 self.ui.listWidgetOutput.addItem(ports_out[port_index]);
             self.on_listWidgetOutput_currentRowChanged(0);
             
+        self.ui.statusBar.showMessage("Scan completed!",1000*5);
+            
     @QtCore.pyqtSlot(bool)
     def on_pushButtonMagic_clicked(self, state):
         self.autoScale = state;
@@ -190,24 +197,28 @@ class MainForm(QtGui.QMainWindow):
         self.midi_in.close_port();
         self.midi_in.open_port(port);
         self.midi_in.callback = self.midi_callback
+        self.ui.statusBar.showMessage("%s port opened!"%(self.ui.listWidgetInput.item(port).text()),1000*5);
             
     @QtCore.pyqtSlot(int)
     def on_listWidgetOutput_currentRowChanged(self, port):
         self.midi_out.close_port();
         self.midi_out.open_port(port);
+        self.ui.statusBar.showMessage("%s port opened!"%(self.ui.listWidgetOutput.item(port).text()),1000*5);
+
         
     def midi_callback(self, message, time_stamp):
-        event_types = (NOTE_ON, NOTE_OFF)
+        event_types = (self.NOTE_ON, self.NOTE_OFF)
         if (message[0] & 0xF0) in event_types:
             if self.autoScale:
                 if(message[1] < 60):
                     note_scale = self.utils.getNoteAndOctave(message[1]);
-                    scale = self.ui.listWidgetScales.currentText();
+                    scale = str(self.ui.listWidgetScales.currentItem().text());
                     
                     result = self.cache.getScaleFromCache(note_scale[0], scale);
                     self.scale_to_map = result['scale_to_map'];
                     self.mapped_scale = result['mapped_scale'];
-                    self.ui.statusBar.showMessage("Magic mode scale:%s-%s"%(note_scale[0],scale),1000*5);
+                
+                    #self.ui.statusBar.showMessage("Magic mode scale:%s-%s"%(note_scale[0],scale),1000*5);
                     self.midi_out.send_message(message);
                 else:
                     self.send_modif_massage(message);
@@ -221,6 +232,7 @@ class MainForm(QtGui.QMainWindow):
         message[1] = self.utils.getMidiNumber(self.mapped_scale[note_octave[0]], note_octave[1]);
         message[1] += self.transpose;
         self.midi_out.send_message(message);
+    
         
 if __name__ == '__main__':
     import sys
