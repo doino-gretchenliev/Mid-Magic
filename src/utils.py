@@ -34,8 +34,9 @@ class Utils:
         for line in lines:
             result = eval(line);
             for key, intervals in result.iteritems():
-                self.__custom_scales.append(key);
-                self.__custom_scales_intervals_map[key] = intervals;
+                if key not in self.__custom_scales:
+                    self.__custom_scales.append(key);
+                    self.__custom_scales_intervals_map[key] = intervals;
     
     def createIntToNoteMap(self):
         for i in range(0, 128):

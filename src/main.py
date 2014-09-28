@@ -40,7 +40,7 @@ class MainForm(QtGui.QMainWindow):
     
         
     def loadAvailableScales(self):
-        for scale in self.utils.getAvailableScales():
+        for scale in self.utils.getAllAvailableScales():
             self.ui.listWidgetScales.addItem(scale);
             
     def loadInitScale(self):

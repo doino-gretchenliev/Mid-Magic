@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainform.ui'
 #
-# Created: Sun Sep 28 18:56:48 2014
+# Created: Sun Sep 28 19:12:01 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setEnabled(True)
-        MainWindow.resize(320, 239)
+        MainWindow.resize(320, 240)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -136,8 +136,8 @@ class Ui_MainWindow(object):
         self.listWidgetScales.setGeometry(QtCore.QRect(10, 50, 281, 81))
         self.listWidgetScales.setTextElideMode(QtCore.Qt.ElideRight)
         self.listWidgetScales.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerItem)
-        self.listWidgetScales.setFlow(QtGui.QListView.LeftToRight)
-        self.listWidgetScales.setProperty("isWrapping", True)
+        self.listWidgetScales.setFlow(QtGui.QListView.TopToBottom)
+        self.listWidgetScales.setProperty("isWrapping", False)
         self.listWidgetScales.setResizeMode(QtGui.QListView.Adjust)
         self.listWidgetScales.setViewMode(QtGui.QListView.ListMode)
         self.listWidgetScales.setUniformItemSizes(True)
