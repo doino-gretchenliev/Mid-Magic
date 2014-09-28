@@ -231,12 +231,24 @@ class MainForm(QtGui.QMainWindow):
         message[1] += self.transpose;
         self.midi_out.send_message(message);
     
+    @QtCore.pyqtSlot()
+    def on_pushButtonExit_clicked(self):
+        self.closeOpenPorts();
+        self.close();
+        
+    def closeOpenPorts(self):
+        if self.midi_in is not None:
+            self.midi_in.close_port();
+        if self.midi_out is not None:
+            self.midi_out.close_port();
+            
+    def __exit__(self):
+        self.closeOpenPorts();
         
 if __name__ == '__main__':
     import sys
 
-    app = QtGui.QApplication(sys.argv)
-    
+    app = QtGui.QApplication(sys.argv);
     app.setStyle(QtGui.QStyleFactory.create("plastique"));
     
     mainForm = MainForm()

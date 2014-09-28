@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainform.ui'
 #
-# Created: Sun Sep 28 17:41:03 2014
+# Created: Sun Sep 28 18:47:14 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -144,9 +144,13 @@ class Ui_MainWindow(object):
         self.listWidgetScales.setWordWrap(True)
         self.listWidgetScales.setObjectName(_fromUtf8("listWidgetScales"))
         self.pushButtonMagic = QtGui.QPushButton(self.AllScales)
-        self.pushButtonMagic.setGeometry(QtCore.QRect(100, 136, 93, 26))
+        self.pushButtonMagic.setGeometry(QtCore.QRect(10, 136, 93, 26))
         self.pushButtonMagic.setCheckable(True)
         self.pushButtonMagic.setObjectName(_fromUtf8("pushButtonMagic"))
+        self.pushButtonExit = QtGui.QPushButton(self.AllScales)
+        self.pushButtonExit.setGeometry(QtCore.QRect(190, 136, 93, 26))
+        self.pushButtonExit.setCheckable(True)
+        self.pushButtonExit.setObjectName(_fromUtf8("pushButtonExit"))
         self.tabWidget.addTab(self.AllScales, _fromUtf8(""))
         self.CustomScale = QtGui.QWidget()
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -276,6 +280,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "B", None))
         self.listWidgetNotes.setSortingEnabled(__sortingEnabled)
         self.pushButtonMagic.setText(_translate("MainWindow", "Magic mode", None))
+        self.pushButtonExit.setText(_translate("MainWindow", "Exit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.AllScales), _translate("MainWindow", "All scales", None))
         self.pushButtonCS.setText(_translate("MainWindow", "C#", None))
         self.pushButtonFS.setText(_translate("MainWindow", "F#", None))

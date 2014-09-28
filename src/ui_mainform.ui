@@ -303,7 +303,7 @@
        <widget class="QPushButton" name="pushButtonMagic">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>10</x>
           <y>136</y>
           <width>93</width>
           <height>26</height>
@@ -311,6 +311,22 @@
         </property>
         <property name="text">
          <string>Magic mode</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonExit">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>136</y>
+          <width>93</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Exit</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
