@@ -36,8 +36,6 @@ class MainForm(QtGui.QMainWindow):
         self.midi_out = None;
         self.check_midi_ports();
         
-
-        
         self.ui.statusBar.showMessage("Ready for rock'N'roll!",1000*5);
     
         
@@ -239,7 +237,7 @@ if __name__ == '__main__':
 
     app = QtGui.QApplication(sys.argv)
     
-    app.setStyle(QtGui.QStyleFactory.create("plastique"));
+    app.setStyle(QtGui.QStyleFactory.create("gtk+"));
     
     mainForm = MainForm()
     mainForm.show()
