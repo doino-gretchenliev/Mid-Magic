@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainform.ui'
 #
-# Created: Sat Sep 27 00:00:29 2014
+# Created: Sun Sep 28 17:41:03 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,6 +66,12 @@ class Ui_MainWindow(object):
         self.tabWidget.setSizePolicy(sizePolicy)
         self.tabWidget.setMaximumSize(QtCore.QSize(500, 16777215))
         self.tabWidget.setSizeIncrement(QtCore.QSize(499, 566))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Arial"))
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.tabWidget.setFont(font)
         self.tabWidget.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.tabWidget.setAutoFillBackground(True)
         self.tabWidget.setTabPosition(QtGui.QTabWidget.North)
@@ -84,6 +90,9 @@ class Ui_MainWindow(object):
         self.AllScales.setObjectName(_fromUtf8("AllScales"))
         self.listWidgetNotes = QtGui.QListWidget(self.AllScales)
         self.listWidgetNotes.setGeometry(QtCore.QRect(10, 10, 281, 31))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        self.listWidgetNotes.setFont(font)
         self.listWidgetNotes.setAutoFillBackground(False)
         self.listWidgetNotes.setFrameShape(QtGui.QFrame.StyledPanel)
         self.listWidgetNotes.setFrameShadow(QtGui.QFrame.Sunken)

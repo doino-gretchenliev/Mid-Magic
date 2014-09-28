@@ -104,6 +104,14 @@
         <height>566</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
       </property>
@@ -149,6 +157,11 @@
           <width>281</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
