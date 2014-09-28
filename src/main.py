@@ -35,7 +35,7 @@ class MainForm(QtGui.QMainWindow):
         self.midi_in = None;
         self.midi_out = None;
         self.check_midi_ports();
-        
+
         self.ui.statusBar.showMessage("Ready for rock'N'roll!",1000*5);
     
         
@@ -249,8 +249,13 @@ if __name__ == '__main__':
     import sys
 
     app = QtGui.QApplication(sys.argv);
-    app.setStyle(QtGui.QStyleFactory.create("plastique"));
+    displayReso = QtGui.QDesktopWidget().screenGeometry();
+    if displayReso.width() == 320 and displayReso.height() == 240:    
+        app.setStyle(QtGui.QStyleFactory.create("plastique"));
+        mainForm = MainForm();
+        mainForm.showFullScreen();
+    else:
+        mainForm = MainForm();
+        mainForm.show();
     
-    mainForm = MainForm()
-    mainForm.show()
     sys.exit(app.exec_())
