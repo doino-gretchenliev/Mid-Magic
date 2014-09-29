@@ -36,7 +36,7 @@ class MainForm(QtGui.QMainWindow):
         self.midi_out = None;
         self.check_midi_ports();
 
-        self.ui.statusBar.showMessage("Ready for rock'N'roll!",1000*5);
+        self.ui.statusBar.showMessage("Ready for rock'N'roll!",1000 * 20);
     
         
     def loadAvailableScales(self):
@@ -189,6 +189,13 @@ class MainForm(QtGui.QMainWindow):
     def on_pushButtonMagic_clicked(self, state):
         self.autoScale = state;
         self.ui.statusBar.showMessage("Magic mode: %s"%(state),1000*5);
+        
+    @QtCore.pyqtSlot()
+    def on_pushButtonPanic_clicked(self):
+        message = [self.NOTE_OFF,0,0];
+        for i in range(0, 127):
+            message[1] = i;
+            self.midi_out.send_message(message);
             
     @QtCore.pyqtSlot(int)
     def on_listWidgetInput_currentRowChanged(self, port):

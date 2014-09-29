@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainform.ui'
 #
-# Created: Sun Sep 28 19:12:01 2014
+# Created: Mon Sep 29 21:34:33 2014
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -151,6 +151,10 @@ class Ui_MainWindow(object):
         self.pushButtonExit.setGeometry(QtCore.QRect(190, 136, 93, 26))
         self.pushButtonExit.setCheckable(True)
         self.pushButtonExit.setObjectName(_fromUtf8("pushButtonExit"))
+        self.pushButtonPanic = QtGui.QPushButton(self.AllScales)
+        self.pushButtonPanic.setGeometry(QtCore.QRect(120, 136, 50, 26))
+        self.pushButtonPanic.setCheckable(True)
+        self.pushButtonPanic.setObjectName(_fromUtf8("pushButtonPanic"))
         self.tabWidget.addTab(self.AllScales, _fromUtf8(""))
         self.CustomScale = QtGui.QWidget()
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -281,6 +285,7 @@ class Ui_MainWindow(object):
         self.listWidgetNotes.setSortingEnabled(__sortingEnabled)
         self.pushButtonMagic.setText(_translate("MainWindow", "Magic mode", None))
         self.pushButtonExit.setText(_translate("MainWindow", "Exit", None))
+        self.pushButtonPanic.setText(_translate("MainWindow", "Panic", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.AllScales), _translate("MainWindow", "All scales", None))
         self.pushButtonCS.setText(_translate("MainWindow", "C#", None))
         self.pushButtonFS.setText(_translate("MainWindow", "F#", None))

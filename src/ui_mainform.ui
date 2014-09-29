@@ -332,6 +332,22 @@
          <bool>true</bool>
         </property>
        </widget>
+       <widget class="QPushButton" name="pushButtonPanic">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>136</y>
+          <width>50</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Panic</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="CustomScale">
        <property name="sizePolicy">
