@@ -170,14 +170,14 @@ class MainForm(QtGui.QMainWindow):
         self.ui.listWidgetOutput.clear();
                 
         if len(ports_in) == 0:
-            self.ui.listWidgetScales.addItem("No input devices");
+            self.ui.listWidgetInput.addItem("No input devices");
         else:
             for port_index in range(0, len(ports_in)):
                 self.ui.listWidgetInput.addItem(ports_in[port_index]);
             self.on_listWidgetInput_currentRowChanged(0);
                
         if len(ports_out) == 0:
-            self._MenuInput.config(text="No output devices");
+            self.ui.listWidgetOutput.addItem("No input devices");
         else:
             for port_index in range(0, len(ports_out)):
                 self.ui.listWidgetOutput.addItem(ports_out[port_index]);
